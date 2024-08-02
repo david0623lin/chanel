@@ -1,0 +1,1754 @@
+syntax = "proto3";  // 定義要使用的 protocol buffer 版本
+
+package camila;  // for name space
+option go_package = "./camila";  // generated code 的 full Go import path
+
+// 基本回傳格式
+message BaseResponse {
+    int32 code = 1;
+    string msg = 2;
+}
+
+// Request
+message EmptyRequest {}
+
+message GetAdminIndexRequest {
+    optional int32 startTime = 1;
+    optional int32 endTime = 2;
+}
+
+message GetAdminIndexResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetAdminIndexResult result = 3;
+}
+
+message GetAdminIndexResult {
+    repeated GetAdminIndexDatas datas = 1;
+    double totalAmount = 2;
+}
+
+message GetAdminIndexDatas {
+    int32 hallID = 1;
+    double amount = 2;
+}
+
+message GetAdminBigDataRequest {
+    optional int32 startTime = 1;
+    optional int32 endTime = 2;
+    optional int32 hallID = 3;
+}
+
+message GetAdminBigDataResponse {
+    int32 code = 1;
+    string msg = 2;
+    repeated GetAdminBigDataResult result = 3;
+}
+
+message GetAdminBigDataResult {
+    int32 hallID = 1;
+    double colAmount = 2;
+    double colBankAmount = 3;
+    double colAliPayAmount = 4;
+    double colWechatAmount = 5;
+    double colECNYAmount = 6;
+    double payAmount = 7;
+    double payBankAmount = 8;
+    double payAliPayAmount = 9;
+    double payWechatAmount = 10;
+    double payECNYAmount = 11;
+    int32 colCount = 12;
+    int32 colBankCount = 13;
+    int32 colAliPayCount = 14;
+    int32 colWechatCount = 15;
+    int32 colECNYCount = 16;
+    int32 colSuccessCount = 17;
+    int32 colBankSuccessCount = 18;
+    int32 colAliPaySuccessCount = 19;
+    int32 colWechatSuccessCount = 20;
+    int32 colECNYSuccessCount = 21;
+    double colSuccessRate = 22;
+    double colBankSuccessRate = 23;
+    double colAliPaySuccessRate = 24;
+    double colWechatSuccessRate = 25;
+    double colECNYSuccessRate = 26;
+    int32 beeRegisterCount = 27;
+    int32 beeCount = 28;
+    int32 beeTakeCount = 29;
+    double beeBalance = 30;
+    double beeLockAmount = 31;
+    int32 agCount = 32;
+    double agBalance = 33;
+    int32 merCount = 34;
+    int32 merColCount = 35;
+    double merBalance = 36;
+    double merLockAmount = 37;
+    int32 colBindCount = 38;
+    int32 colBankBindCount = 39;
+    int32 colAliPayBindCount = 40;
+    int32 colWechatBindCount = 41;
+    int32 colECNYBindCount = 42;
+    int32 colUseCount = 43;
+    int32 colBankUseCount = 44;
+    int32 colAliPayUseCount = 45;
+    int32 colWechatUseCount = 46;
+    int32 colECNYUseCount = 47;
+}
+
+message GetOptReportChangeRequest {
+    optional int32 startTime = 1;
+    optional int32 endTime = 2;
+    optional int32 type = 3; // 類型 1:出款, 2:人工補提, 3:餘額轉移, 4:利潤, 5:工資獎勵, 6:補入提出
+    optional int32 subType = 4; // 項目 1-1:出款, 1-2:手續費, 2-1:補入, 2-2:提出, 3-1:轉入, 3-2:轉出, 4-1:利潤, 4-2:讓分, 5-1:活動獎勵支出, 5-2:工資獎勵支出, 6-1:補入, 6-2:提出
+    optional string orderID = 5; // 系統訂單號
+    int32 page = 6;
+    int32 limit = 7;
+}
+
+message GetOptReportChangeResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetOptReportChangeResult result = 3;
+}
+
+message GetOptReportChangeResult {
+    repeated GetOptReportChangeDatas datas = 1;
+    int32 totalCount = 2;
+}
+
+message GetOptReportChangeDatas {
+    string orderID = 1; // 系統訂單號
+    int32 type = 2; // 類型 1:出款, 2:人工補提, 3:餘額轉移, 4:利潤, 5:工資獎勵, 6:補入提出
+    int32 subType = 3; // 項目 1-1:出款, 1-2:手續費, 2-1:補入, 2-2:提出, 3-1:轉入, 3-2:轉出, 4-1:利潤, 4-2:讓分, 5-1:活動獎勵支出, 5-2:工資獎勵支出, 6-1:補入, 6-2:提出
+    int32 changeTime = 4; // 變動時間
+    double changeAmount = 5; // 變動金額
+    double balance = 6; // 帳戶餘額
+    string remark = 7; // 備註
+}
+
+message GetOptReportAgentChangeRequest {
+    optional int32 startTime = 1;
+    optional int32 endTime = 2;
+    optional string account = 3;
+    optional string orderID = 4;
+    optional int32 type = 5; // 類型 1:提現 2:凍結解凍 3:人工補提 4:餘額轉移 5:利潤 6:補入提出
+    optional int32 subType = 6; // 項目 1-1:提現, 1-2:手續費, 2-1:凍結, 2-2:解凍, 3-1:補入, 3-2:提出, 4-1:轉入, 4-2:轉出, 5-1:代收利潤, 5-2:代收額外時間, 5-3:代收額外金額, 5-4:代付利潤, 5-5:代付額外時間, 5-6:代付額外金額, 6-1:補入, 6-2:提出
+    int32 page = 7;
+    int32 limit = 8;
+}
+
+message GetOptReportAgentChangeResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetOptReportAgentChangeResult result = 3;
+}
+
+message GetOptReportAgentChangeResult {
+    repeated GetOptReportAgentChangeDatas datas = 1;
+    int32 totalCount = 2;
+}
+
+message GetOptReportAgentChangeDatas {
+    string orderID = 1; // 系統訂單號
+    string agAccount = 2; // 代理帳號
+    int32 type = 3; // 類型 1:提現 2:凍結解凍 3:人工補提 4:餘額轉移 5:利潤
+    int32 subType = 4;  // 項目 1-1:提現, 1-2:手續費, 2-1:凍結, 2-2:解凍, 3-1:補入, 3-2:提出, 4-1:轉入, 4-2:轉出, 5-1:代收利潤, 5-2:代收額外時間, 5-3:代收額外金額, 5-4:代付利潤, 5-5:代付額外時間, 5-6:代付額外金額
+    int32 changeTime = 5; // 變動時間
+    double changeAmount = 6; // 變動金額
+    double balance = 7; // 帳戶餘額
+    int32 lockTime = 8; // 凍結時間
+    string remark = 9; // 備註
+}
+
+message GetOptReportMerchantChangeRequest {
+    optional int32 startTime = 1;
+    optional int32 endTime = 2;
+    optional string account = 3;
+    optional string orderID = 4; // 系統訂單號
+    optional string merOrderID = 5; // 商戶訂單號
+    optional int32 type = 6; // 類型 1:代收 2:代付 3:凍結解凍 4:人工補提 5:餘額轉移
+    optional int32 subType = 7; // 項目 1-1:代收, 1-2:補入, 1-3:提出, 1-4:手續費, 1-5:額外時間, 1-6:額外金額, 2-1:代付, 2-2:下發, 2-3:手續費, 2-4:額外時間, 2-5:額外金額, 3-1:凍結, 3-2:解凍, 4-1:補入, 4-2:提出, 5-1:轉入, 5-2:轉出
+    int32 page = 8;
+    int32 limit = 9;
+}
+
+message GetOptReportMerchantChangeResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetOptReportMerchantChangeResult result = 3;
+}
+
+message GetOptReportMerchantChangeResult {
+    repeated GetOptReportMerchantChangeDatas datas = 1;
+    int32 totalCount = 2;
+}
+
+message GetOptReportMerchantChangeDatas {
+    string orderID = 1; // 系統訂單號
+    string merOrderID = 2; // 商戶訂單號
+    string merAccount = 3; // 商戶帳號
+    int32 type = 4; // 類型 1:代收 2:代付 3:凍結解凍 4:人工補提 5:餘額轉移
+    int32 subType = 5; // 項目 1-1:代收, 1-2:補入, 1-3:提出, 1-4:手續費, 1-5:額外時間, 1-6:額外金額, 2-1:代付, 2-2:下發, 2-3:手續費, 2-4:額外時間, 2-5:額外金額, 3-1:凍結, 3-2:解凍, 4-1:補入, 4-2:提出, 5-1:轉入, 5-2:轉出
+    int32 changeTime = 6; // 變動時間
+    double changeAmount = 7; // 變動金額
+    double balance = 8; // 帳戶餘額
+    string remark = 9; // 備註
+}
+
+message GetOptReportBeeChangeRequest {
+    optional int32 startTime = 1;
+    optional int32 endTime = 2;
+    optional string account = 3;
+    optional string orderID = 4; // 系統訂單號
+    optional int32 type = 5; // 類型 1:代收 2:代付 3:提現 4:凍結解凍 5:人工補提 6:餘額轉移 7:佣金
+    optional int32 subType = 6; // 項目 1-1:代收, 1-2:補入, 1-3:提出, 2-1:代付, 3-1:提現, 4-1:凍結, 4-2:解凍, 5-1:補入, 5-2:提出, 6-1:轉入, 6-2:轉出, 7-1:代收佣金, 7-2:代付佣金, 7-3:活動獎勵, 7-4:退款獎勵, 7-5:工資
+    int32 page = 7;
+    int32 limit = 8;
+}
+
+message GetOptReportBeeChangeResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetOptReportBeeChangeResult result = 3;
+}
+
+message GetOptReportBeeChangeResult {
+    repeated GetOptReportBeeChangeDatas datas = 1;
+    int32 totalCount = 2;
+}
+
+message GetOptReportBeeChangeDatas {
+    string orderID = 1; // 系統訂單號
+    string beeAccount = 2; // 蜜蜂帳號
+    int32 type = 3; // 類型
+    int32 subType = 4; // 項目
+    int32 changeTime = 5; // 變動時間
+    double changeAmount = 6; // 變動金額
+    double balance = 7; // 帳戶餘額
+    string remark = 8; // 備註
+}
+
+message GetOptReportBalanceRequest {
+    optional int32 date = 1;
+    optional int32 type = 2; // 類型 1:商戶餘額 2:商戶流水 3:跑分員跑量
+    optional string account = 3; // 帳號
+}
+
+message GetOptReportBalanceResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetOptReportBalanceResult result = 3;
+}
+
+message GetOptReportBalanceResult {
+    repeated GetOptReportBalanceDatas datas = 1;
+    double totalAmount = 2;
+}
+message GetOptReportBalanceDatas {
+    string account = 1;
+    string name = 2;
+    double merBalance = 3;
+    double merAmount = 4;
+    double beeColAmount = 5;
+    double beePayAmount = 6;
+    int32 beePayCount = 7;
+}
+
+message GetOptReportResultBeeRequest {
+    optional int32 startTime = 1;
+    optional int32 endTime = 2;
+    optional int32 type = 3; // 項目 1:代收傭金, 2:代付傭金, 3:活動獎勵
+    optional string orderID = 4; // 系統訂單號
+    optional string beeAccount = 5; // 蜜蜂帳號
+    int32 page = 6;
+    int32 limit = 7;
+}
+
+message GetOptReportResultBeeResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetOptReportResultBeeResult result = 3;
+}
+
+message GetOptReportResultBeeResult {
+    repeated GetOptReportResultBeeDatas datas = 1;
+    int32 totalCount = 2;
+}
+
+message GetOptReportResultBeeDatas {
+    string orderID = 1; // 系統訂單號
+    string beeAccount = 2; // 蜜蜂帳號
+    int32 subType = 3; // 項目 1:代收傭金, 2:代付傭金, 3:活動獎勵
+    int32 successTime = 4; // 完成時間
+    double amount = 5; // 變動金額
+    int32 type = 6; // 類型 1:代收 2:補入 3:提出 4:代付 5:活動
+    string remark = 7; // 備註
+}
+
+message GetOptReportBeeNoPayRequest {
+    optional int32 startTime = 1;
+    optional int32 endTime = 2;
+    optional string account = 3;
+    optional string orderID = 4; // 系統訂單號
+    optional int32 type = 5; // 類型 1:代收 2:代付 3:提現 4:凍結解凍 5:人工補提 6:餘額轉移 7:佣金
+    optional int32 subType = 6; // 項目 1-1:代收, 1-2:補入, 1-3:提出, 2-1:代付, 3-1:提現, 4-1:凍結, 4-2:解凍, 5-1:補入, 5-2:提出, 6-1:轉入, 6-2:轉出, 7-1:代收佣金, 7-2:代付佣金, 7-3:活動獎勵, 7-4:退款獎勵, 7-5:工資
+    int32 page = 7;
+    int32 limit = 8;
+}
+
+message GetOptReportBeeNoPayResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetOptReportBeeNoPayResult result = 3;
+}
+
+message GetOptReportBeeNoPayResult {
+    repeated GetOptReportBeeNoPayDatas datas = 1;
+    int32 totalCount = 2;
+}
+
+message GetOptReportBeeNoPayDatas {
+    string orderID = 1; // 系統訂單號
+    string beeAccount = 2; // 蜜蜂帳號
+    int32 type = 3; // 類型
+    int32 subType = 4; // 項目
+    int32 createTime = 5; // 建立時間
+    double amount = 6; // 未結算金額
+    string remark = 8; // 備註
+}
+
+message GetOptReportAgentRequest {
+    optional int32 startTime = 1;
+    optional int32 endTime = 2;
+    optional string account = 3;
+    int32 page = 4;
+    int32 limit = 5;
+}
+
+message GetOptReportAgentResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetOptReportAgentResult result = 3;
+}
+
+message GetOptReportAgentResult {
+    repeated GetOptReportAgentDatas datas = 1;
+    GetOptReportAgentTotal total = 2;
+    int32 totalCount = 3;
+}
+
+message GetOptReportAgentDatas {
+    string agID = 1; // 代理ID
+    string agAccount = 2; // 代理號
+    string agName = 3; // 代理名稱
+    int32 resultDate = 4; // 結算日期
+    double basicProfit = 5; // 代理利潤
+    double otherProfit = 6; // 額外利潤
+    double getCash = 7; // 已提現
+    double lockBalance = 8; // 凍結餘額
+    double resultBalance = 9; // 結算餘額
+}
+
+message GetOptReportAgentTotal {
+    double basicProfit = 1; // 代理利潤
+    double otherProfit = 2; // 額外利潤
+    double getCash = 3; // 已提現
+}
+
+message GetOptReportAgentMerRequest {
+    int32 date = 1;
+    string agID = 2;
+}
+
+message GetOptReportAgentMerResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetOptReportAgentMerResult result = 3;
+}
+
+message GetOptReportAgentMerResult {
+    repeated GetOptReportAgentMerDatas datas = 1;
+    GetOptReportAgentMerTotal total = 2;
+}
+
+message GetOptReportAgentMerDatas {
+    string merAccount = 1; // 商戶號
+    double colAmount = 2; // 總代收
+    double payAmount = 3; // 總代付
+    double agBasicProfit = 4; // 代理利潤
+    double agOtherProfit = 5; // 代理額外利潤
+}
+
+message GetOptReportAgentMerTotal {
+    double colAmount = 1; // 總代收
+    double payAmount = 2; // 總代付
+    double agBasicProfit = 3; // 代理利潤
+    double agOtherProfit = 4; // 代理額外利潤
+}
+
+message GetOptReportMerchantRequest {
+    optional int32 startTime = 1;
+    optional int32 endTime = 2;
+    optional string account = 3;
+    int32 page = 4;
+    int32 limit = 5;
+}
+
+message GetOptReportMerchantResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetOptReportMerchantResult result = 3;
+}
+
+message GetOptReportMerchantResult {
+    repeated GetOptReportMerchantDatas datas = 1;
+    GetOptReportMerchantTotal total = 2;
+    int32 totalCount = 3;
+}
+
+message GetOptReportMerchantDatas {
+    string merID = 1; // 商戶ID
+    string merAccount = 2; // 戶號
+    string merName = 3; // 戶名稱
+    int32 resultDate = 4; // 結算日期
+    double colAmount = 5; // 總代收
+    double colBasicFee = 6; // 代收手續費
+    double colOtherTimeFee = 7; // 額外時間代收手續費
+    double colOtherGoldFee = 8; // 額外金額代收手續費
+    double payAmount = 9; // 總代付
+    double payBasicFee = 10; // 代付手續費
+    double payOtherTimeFee = 11; // 額外時間代付手續費
+    double payOtherGoldFee = 12; // 額外金額代付手續費
+    double lockAmount = 13; // 凍結資金
+    double resultBalance = 14; // 結算餘額
+}
+
+message GetOptReportMerchantTotal {
+    double colAmount = 1; // 總代收
+    double colBasicFee = 2; // 代收手續費
+    double payAmount = 3; // 總代付
+    double payBasicFee = 4; // 代付手續費
+}
+
+message GetOptReportMerchantPaymentRequest {
+    int32 date = 1;
+    string merID = 2;
+}
+
+message GetOptReportMerchantPaymentResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetOptReportMerchantPaymentResult result = 3;
+}
+
+message GetOptReportMerchantPaymentResult {
+    repeated GetOptReportMerchantPaymentDatas datas = 1;
+    GetOptReportMerchantPaymentTotal total = 2;
+}
+
+message GetOptReportMerchantPaymentDatas {
+    int32 paymentSeries = 1;
+    double colAmount = 2; // 總代收
+    double colBasicFee = 3; // 代收手續費
+    double colOtherTimeFee = 4; // 額外時間代收手續費
+    double colOtherGoldFee = 5; // 額外金額代收手續費
+}
+
+message GetOptReportMerchantPaymentTotal {
+    double colAmount = 1; // 總代收
+    double colBasicFee = 2; // 代收手續費
+    double colOtherTimeFee = 3; // 額外時間代收手續費
+    double colOtherGoldFee = 4; // 額外金額代收手續費
+}
+
+message GetOptReportProfitRequest {
+    optional int32 startTime = 1;
+    optional int32 endTime = 2;
+}
+
+message GetOptReportProfitResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetOptReportProfitResult result = 3;
+}
+
+message GetOptReportProfitResult {
+    GetOptReportProfitDataIn in = 1;
+    GetOptReportProfitDataOut out = 2;
+    double totalProfit = 3; 
+}
+
+message GetOptReportProfitDataIn {
+    double merColBasicProfit = 1; 
+    double merColOtherTimeProfit = 2;
+    double merColOtherGoldProfit = 3;
+    double merPayBasicProfit = 4;
+    double merPayOtherTimeProfit = 5;
+    double merPayOtherGoldProfit = 6;
+}
+
+message GetOptReportProfitDataOut {
+    double agProfit = 1;
+    double beeInProfit = 2;
+    double beeOutProfit = 3;
+    double beeAction = 4;
+}
+
+message GetOptReportCustomerRequest {
+    optional int32 startTime = 1;
+    optional int32 endTime = 2;
+    optional int32 class = 3; // 班別
+    optional string account = 4; // 帳號
+}
+
+message GetOptReportCustomerResponse {
+    int32 code = 1;
+    string msg = 2;
+    repeated GetOptReportCustomerResult result = 3;
+}
+
+message GetOptReportCustomerResult {
+    int32 class = 1;
+    repeated GetOptReportCustomerDatas datas = 2;
+    GetOptReportCustomerTotal total = 3;
+}
+
+message GetOptReportCustomerDatas {
+    string account = 1; // 客服帳號
+    int32 col = 2; // 代收訂單
+    int32 pay = 3; // 代付訂單
+    int32 manual = 4; // 人工補提
+    int32 balanceChange = 5; // 餘額轉移
+    int32 replenishIn = 6; // 訂單補入
+    int32 replenishOut = 7; // 訂單提出
+    int32 total = 8; // 總計單數
+    double proportion = 9; // 佔比
+}
+
+message GetOptReportCustomerTotal {
+    int32 col = 1; // 代收訂單
+    int32 pay = 2; // 代付訂單
+    int32 manual = 3; // 人工補提
+    int32 balanceChange = 4; // 餘額轉移
+    int32 replenishIn = 5; // 訂單補入
+    int32 replenishOut = 6; // 訂單提出
+    int32 total = 7; // 總計單數
+    double proportion = 8; // 佔比
+}
+
+message GetOptReportPaymentRequest {
+    optional int32 startTime = 1;
+    optional int32 endTime = 2;
+}
+
+message GetOptReportPaymentResponse {
+    int32 code = 1;
+    string msg = 2;
+    repeated GetOptReportPaymentResult result = 3;
+}
+
+message GetOptReportPaymentResult {
+    int32 paymentSeries = 1; // 渠道系別
+    int32 paymentType = 2; // 渠道類型
+    double paymentAmount = 3; // 渠道跑量
+    int32 paymentCount = 4; // 渠道次數
+    double paymentFee = 5; // 渠道手續費
+}
+
+
+message GetOptReportViewRequest {
+    optional int32 date = 1;
+}
+
+message GetOptReportViewResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetOptReportViewResult result = 3;
+}
+
+message GetOptReportViewResult {
+    int32 registerCount = 1; // 註冊人數
+    int32 beeCount = 2; // 蜜蜂人數
+    int32 colCount = 3; // 總代收筆數
+    int32 payCount = 4; // 總代付筆數
+    double bankColAmount = 5; // 銀行卡代收
+    double aliPayColAmount = 6; // 支付寶代收
+    double wechatColAmount = 7; // 微信代收
+    double unionPayColAmount = 8; // 雲閃付代收
+    double merPayAmount = 9; // 商戶代付
+    double agGetCashAmount = 10; // 代理提現
+    double beeGetCashAmount = 11; // 蜜蜂提現
+    double beePayAmount = 12; // 蜜蜂代付
+    double beeBuyAmount = 13; // 蜜蜂買分
+    double profitOutAmount = 14; // 利潤出款
+    double manualInAmount = 15; // 總補入
+    double manualOutAmount = 16; // 總提出
+    double beeActionAmount = 17; // 蜜蜂總活動 (包含工資)
+    double replenishInAmount = 18; // 訂單補入
+    double replenishOutAmount = 19; // 訂單提出
+    double merTotalBalance = 20; // 商戶總餘額
+    double merUsableBalance = 21; // 商戶可用餘額
+    double merRunningAmount = 22;  // 商戶進貨處理中餘額
+    double merLockAmount = 23; // 商戶凍結資金
+    double agTotalBalance = 24; // 代理總餘額
+    double agUsableBalance = 25; // 代理可用餘額
+    double agRunningAmount = 26; // 代理進貨處理中餘額
+    double agLockAmount = 27; // 代理凍結資金
+    double agProfit = 32; // 代理佣金
+    double beeTotalBalance = 28; // 蜜蜂總餘額
+    double beeUsableBalance = 29; // 蜜蜂可用餘額
+    double beeRunningAmount = 30; // 蜜蜂出貨處理中餘額
+    double beeLockAmount = 31; // 蜜蜂凍結資金
+    double beeProfit = 33; // 蜜蜂佣金
+}
+
+message GetOptOrderBalanceListRequest {
+    optional int32 startTime = 1; // 開始時間
+    optional int32 endTime = 2; // 結束時間
+    optional int32 outRole = 3; // 轉出角色
+    optional string outAccount = 4; // 轉出帳號
+    optional int32 inRole = 5; // 轉入角色
+    optional string inAccount = 6; // 轉入帳號
+    int32 page = 7;
+    int32 limit = 8;
+}
+
+message GetOptOrderBalanceListResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetOptOrderBalanceListResult result = 3;
+}
+
+message GetOptOrderBalanceListResult {
+    repeated GetOptOrderBalanceListDatas datas = 1;
+    int32 totalCount = 2;
+}
+
+message GetOptOrderBalanceListDatas {
+    string orderID = 1; // 系統訂單號
+    int32 outRole = 2; // 轉出角色
+    string outAccount = 3; // 轉出帳號
+    int32 inRole = 4; // 轉入角色
+    string inAccount = 5; // 轉入帳號
+    double amount = 6; // 轉移金額
+    string remark = 7; // 備註
+    string optAccount = 8; // 運營員帳號
+    int32 createTime = 9; // 申請時間
+    int32 successTime = 10; // 完成時間
+    int32 status = 11; // 交易狀態 1:處理中 2:成功 3:失敗
+}
+
+message GetOptOrderManualListRequest {
+    optional int32 startTime = 1; // 開始時間
+    optional int32 endTime = 2; // 結束時間
+    optional int32 role = 3; // 角色
+    optional string account = 4; // 帳號
+    optional int32 type = 5; // 類型 1:補入 2:提出
+    optional int32 subType = 6; // 項目 1:异动点数 2:信用点数 3:活动点数 4:测试点数 5:出款修正 6:收款修正 7:额外入款 8:额外出款
+    int32 page = 7;
+    int32 limit = 8;
+}
+
+message GetOptOrderManualListResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetOptOrderManualListResult result = 3;
+}
+
+message GetOptOrderManualListResult {
+    repeated GetOptOrderManualListDatas datas = 1;
+    double totalAmount = 2; // 交易金額總計
+    int32 totalCount = 3;
+}
+
+message GetOptOrderManualListDatas {
+    string account = 1; // 帳號
+    int32 role = 2; // 角色
+    int32 type = 3; // // 類型 1:補入 2:提出
+    int32 subType = 4; // 項目 1:异动点数 2:信用点数 3:活动点数 4:测试点数 5:出款修正 6:收款修正 7:额外入款 8:额外出款
+    double amount = 5; // 交易金額
+    double balance = 6; // 帳戶餘額
+    string remark = 7; // 備註
+    string optAccount = 8; // 運營員帳號
+    int32 createTime = 9; // 交易時間
+}
+
+message GetOptOrderReplenishListRequest {
+    optional int32 startTime = 1; // 開始時間
+    optional int32 endTime = 2; // 結束時間
+    optional string merAccount = 3; // 商戶帳號
+    optional string beeAccount = 4; // 蜜蜂帳號
+    optional string sourceOrderID = 5; // 原系統訂單號
+    optional string orderID = 6; // 系統訂單號
+    optional string merOrderID = 7; // 商戶訂單號
+    int32 type = 8; // 類型 1:補入 2:提出
+    optional int32 paymentSeries = 9; // 交易類型
+    optional int32 status = 10; // 操作狀態 1:處理中 2:成功 3:失敗
+    optional int32 successStartTime = 11; // 完成時間
+    optional int32 successEndTime = 12; // 完成時間
+    int32 page = 13;
+    int32 limit = 14;
+}
+
+message GetOptOrderReplenishListResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetOptOrderReplenishListResult result = 3;
+}
+
+message GetOptOrderReplenishDataRequest {
+    string orderID = 1; // 系統訂單號
+}
+
+message GetOptOrderReplenishDataResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetOptOrderReplenishDataResult result = 3;
+}
+
+message GetOptOrderReplenishDataResult {
+    GetOptOrderReplenishDataResultIn in = 1; // 補入
+    GetOptOrderReplenishDataResultOut out = 2; // 提出
+}
+
+message GetOptOrderReplenishDataResultIn {
+    string auditor = 1;
+    string orderID = 2; // 系統訂單號
+    string merOrderID = 3; // 商戶訂單號
+    string merAccount = 4; // 商戶帳號
+    string agAccount = 5; // 代理帳號
+    int32 card = 6; // 代收卡池
+    int32 createTime = 7; // 申請時間
+    int32 takeTime = 8; // 領取時間
+    int32 successTime = 9; // 完成時間
+    int32 paymentSeries = 10; // 交易類型
+    double sourceAmount = 11; // 原始訂單金額
+    double amount = 12; // 訂單金額
+    double basicFee = 13; // 訂單基礎手續費
+    double timeFee = 14; // 訂單額外時間手續費
+    double goldFee = 15; // 訂單額外時金額續費
+    string remark = 16; // 備註
+    string payBank = 17; // 付款人銀行
+    string payName = 18; // 付款人姓名
+    string payAccount = 19; // 付款卡號
+    string receiveBank = 20; // 收款人銀行
+    string receiveSubBank = 21; // 收款人支行
+    string receiveName = 22; // 收款人姓名
+    string receiveAccount = 23; // 收款卡號
+    int32 status = 24; // 操作狀態 1:處理中 2:成功 3:失敗
+}
+
+message GetOptOrderReplenishDataResultOut {
+    string auditor = 1; // 運營員帳號
+    string orderID = 2; // 系統訂單號
+    string merOrderID = 3; // 商戶訂單號
+    string merAccount = 4; // 商戶帳號
+    string agAccount = 5; // 代理帳號
+    int32 card = 6; // 代收卡池
+    int32 createTime = 7; // 申請時間
+    int32 takeTime = 8; // 領取時間
+    int32 successTime = 9; // 完成時間
+    int32 paymentSeries = 10; // 交易類型
+    double sourceAmount = 11; // 原始訂單金額
+    double sourceBasicFee = 12; // 原始訂單基礎手續費
+    double amount = 13; // 訂單金額
+    double basicFee = 14; // 訂單基礎手續費
+    string remark = 15; // 備註
+    string payBank = 16; // 付款人銀行
+    string payName = 17; // 付款人姓名
+    string payAccount = 18; // 付款卡號
+    string receiveBank = 19; // 收款人銀行
+    string receiveSubBank = 20; // 收款人支行
+    string receiveName = 21; // 收款人姓名
+    string receiveAccount = 22; // 收款卡號
+    int32 status = 24; // 操作狀態 1:處理中 2:成功 3:失敗
+}
+
+message GetOptOrderReplenishListResult {
+    repeated GetOptOrderReplenishListDatas datas = 1;
+    double totalAmount = 2; // 交易金額總計
+    int32 totalCount = 3;
+}
+
+message GetOptOrderReplenishListDatas {
+    string sourceOrderID = 1; // 原系統訂單號
+    string orderID = 2; // 系統訂單號
+    string merOrderID = 3; // 商戶訂單號
+    int32 paymentSeries = 4; // 交易類型
+    string merAccount = 5; // 商戶帳號
+    string beeAccount = 6; // 蜜蜂帳號
+    GetOptOrderReplenishListOptAccount optAccount = 7; // 運營員帳號
+    int32 createTime = 8; // 申請時間
+    int32 successTime = 9; // 完成時間
+    double amount = 10; // 交易金額
+    int32 status = 11; // 操作狀態 1:成功 2:失敗
+}
+
+message GetOptOrderReplenishListOptAccount {
+    string optAccount_1 = 1; // 第一個運營員帳號
+    string optAccount_2 = 2; // 第二個運營員帳號
+}
+
+message GetOptOrderColListRequest {
+    optional int32 startTime = 1; // 開始時間
+    optional int32 endTime = 2; // 結束時間
+    optional string merAccount = 3; // 商戶帳號
+    optional string agAccount = 4; // 代理帳號
+    optional string orderID = 5; // 系統訂單號
+    optional string merOrderID = 6; // 商戶訂單號
+    optional int32 paymentSeries = 7; // 交易類型
+    optional int32 status = 8; // 交易狀態 1:等待接單 2:等待代收 3:確認代收 4:匹配失敗 5:訂單超時 6:代收失敗 7:退款
+    optional string beeAccount = 9; // 蜜蜂帳號
+    optional string payName = 10; // 付款人姓名
+    optional string colCardID = 11; // 收款卡號
+    optional int32 colCID = 12; // 收款卡ID
+    optional int32 successStartTime = 13; // 完成時間
+    optional int32 successEndTime = 14; // 完成時間
+    int32 page = 15;
+    int32 limit = 16;
+}
+
+message GetOptOrderColListResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetOptOrderColListResult result = 3;
+}
+
+message GetOptOrderColDataRequest {
+    string orderID = 1; // 系統訂單號
+}
+
+message GetOptOrderColDataResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetOptOrderColDataResult result = 3;
+}
+
+message GetOptOrderColDataResult {
+    string orderID = 1; // 系統訂單號
+    string merOrderID = 2; // 商戶訂單號
+    string merAccount = 3; // 商戶帳號
+    string agAccount = 4; // 代理帳號
+    string beeAccount = 5; // 蜜蜂帳號
+    int32 collectCard = 6; // 代收卡池
+    int32 paymentSeries = 7; // 交易類型
+    string mark = 8; // 附言
+    double amount = 9; // 訂單金額
+    double basicFee = 10; // 訂單基礎手續費
+    double timeFee = 11; // 訂單額外時間手續費
+    double goldFee = 12; // 訂單額外時金額續費
+    int32 receiveID = 13; // 收款人卡ID
+    string receiveBank = 14; // 收款人銀行
+    string receiveSubBank = 15; // 收款人支行
+    string receiveName = 16; // 收款人姓名
+    string receiveAccount = 17; // 收款卡號
+    int32 payID = 18; // 付款人卡ID
+    string payBank = 19; // 付款人銀行
+    string paySubBank = 20; // 付款人支行
+    string payName = 21; // 付款人姓名
+    string payAccount = 22; // 付款卡號
+    int32 status = 23; // 交易狀態 1:等待接單 2:等待代收 3:確認代收 4:匹配失敗 5:訂單超時 6:代收失敗 7:退款
+    string remark = 24; // 備註
+    int32 createTime = 25; // 申請時間
+    int32 matchTime = 26; // 匹配時間
+    int32 takeTime = 27; // 領取時間
+    int32 successTime = 28; // 完成時間
+    GetOptOrderColDataCertPath certPath = 29; // 出款憑證
+}
+
+message GetOptOrderColDataCertPath {
+    string certPath_1 = 1; // 第一個憑證
+    string certPath_2 = 2; // 第二個憑證
+    string certPath_3 = 3; // 第三個憑證
+    string certPath_4 = 4; // 第四個憑證
+}
+
+message GetOptOrderColListResult {
+    repeated GetOptOrderColListDatas datas = 1;
+    GetOptOrderColListStatistics statistics = 2; // 統計
+    double totalAmount = 3; // 訂單金額總計
+    double totalFinalAmount = 4; // 成交金額總計
+    int32 totalCount = 5;
+}
+
+message GetOptOrderColListDatas {
+    GetOptOrderColListOptAccount optAccount = 1; // 運營員帳號
+    string newOrderID = 2; // 新訂單號
+    string orderID = 3; // 系統訂單號
+    string merOrderID = 4; // 商戶訂單號
+    string merAccount = 5; // 商戶帳號
+    int32 paymentSeries = 6; // 交易類型
+    string beeAccount = 7; // 蜜蜂帳號
+    string remark = 8; // 蜜蜂備註
+    string payName = 9; // 付款人姓名
+    int32 createTime = 10; // 申請時間
+    int32 successTime = 11; // 完成時間
+    double amount = 12; // 訂單金額
+    double finalAmount = 13; // 成交金額
+    int32 status = 14; // 交易狀態 1:等待接單 2:等待代收 3:確認代收 4:匹配失敗 5:訂單超時 6:代收失敗 7:退款
+    GetOptOrderColListCertPath certPath = 15; // 出款憑證
+}
+
+message GetOptOrderColListOptAccount {
+    string optAccount_1 = 1; // 第一個運營員帳號
+    int32 optAccountStatus_1 = 2; // 第一個運營員帳號狀態
+    string optAccount_2 = 3; // 第二個運營員帳號
+    int32 optAccountStatus_2 = 4; // 第二個運營員帳號狀態
+}
+
+message GetOptOrderColListCertPath {
+    string certPath_1 = 1; // 第一個憑證
+    string certPath_2 = 2; // 第二個憑證
+    string certPath_3 = 3; // 第三個憑證
+    string certPath_4 = 4; // 第四個憑證
+}
+
+message GetOptOrderColListStatistics {
+    int32 orderCount = 1; // 訂單數量
+    int32 realOrderCount = 2; // 實際訂單數量
+    int32 successOrderCount = 3; // 成功訂單數量
+    double successOrderAmount = 4; // 成功訂單總額
+    double successPercent = 5; // 成功率
+}
+
+message GetOptOrderPayListRequest {
+    optional int32 startTime = 1; // 開始時間
+    optional int32 endTime = 2; // 結束時間
+    optional string orderAccount = 3; // 發起帳號
+    optional string merAccount = 4; // 商戶帳號
+    optional string agAccount = 5; // 代理帳號
+    optional string orderID = 6; // 系統訂單號
+    optional string merOrderID = 7; // 商戶訂單號
+    optional int32 paymentSeries = 8; // 交易類型
+    optional int32 payCardID = 9; // 卡池
+    optional int32 status = 10; // 交易狀態 1:等待接單 2:等待代付 3:確認代付 4:匹配失敗 5:訂單超時 6:代付失敗 7:等待派發 8:等待審核
+    optional string beeAccount = 11; // 蜜蜂帳號
+    optional string payAccount = 12; // 出款卡號
+    optional string payName = 13; // 出款姓名
+    optional int32 payCID = 14; // 出款卡ID
+    optional int32 role = 15; // 角色
+    optional string receiveName = 16; // 收款姓名
+    optional int32 successStartTime = 17; // 完成時間
+    optional int32 successEndTime = 18; // 完成時間
+    int32 page = 19;
+    int32 limit = 20;
+}
+
+message GetOptOrderPayListResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetOptOrderPayListResult result = 3;
+}
+
+message GetOptOrderPayListResult {
+    repeated GetOptOrderPayListDatas datas = 1;
+    GetOptOrderPayListStatistics statistics = 2; // 統計
+    double totalAmount = 3; // 交易金額總計
+    int32 totalCount = 4;
+}
+
+message GetOptOrderPayListDatas {
+    GetOptOrderPayListOptAccount optAccount = 1; // 運營員帳號
+    string orderID = 2; // 系統訂單號
+    string merOrderID = 3; // 商戶訂單號
+    string merAccount = 4; // 商戶帳號
+    int32 role = 5; // 角色
+    string orderAccount = 6; // 發起帳號
+    int32 paymentSeries = 7; // 交易類型
+    string beeAccount = 8; // 蜜蜂帳號
+    string remark = 9; // 蜜蜂備註
+    int32 createTime = 10; // 申請時間
+    int32 successTime = 11; // 完成時間
+    double amount = 12; // 訂單金額
+    int32 status = 13; // 交易狀態 1:等待接單 2:等待代付 3:確認代付 4:匹配失敗 5:訂單超時 6:代付失敗 7:等待派發 8:等待審核
+    GetOptOrderPayListCertPath certPath = 14; // 出款憑證
+}
+
+message GetOptOrderPayListOptAccount {
+    string optAccount_1 = 1; // 第一個運營員帳號
+    int32 optAccountStatus_1 = 2; // 第一個運營員帳號狀態
+    string optAccount_2 = 3; // 第二個運營員帳號
+    int32 optAccountStatus_2 = 4; // 第二個運營員帳號狀態
+}
+
+message GetOptOrderPayListCertPath {
+    string certPath_1 = 1; // 第一個憑證
+    string certPath_2 = 2; // 第二個憑證
+    string certPath_3 = 3; // 第三個憑證
+    string certPath_4 = 4; // 第四個憑證
+}
+
+message GetOptOrderPayListStatistics {
+    int32 orderCount = 1; // 訂單數量
+    int32 realOrderCount = 2; // 實際訂單數量
+    int32 successOrderCount = 3; // 成功訂單數量
+    double successOrderAmount = 4; // 成功訂單總額
+    double successPercent = 5; // 成功率
+}
+
+message GetOptOrderPayDataRequest {
+    string orderID = 1; // 系統訂單號
+}
+
+message GetOptOrderPayDataResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetOptOrderPayDataResult result = 3;
+}
+
+message GetOptOrderPayDataResult {
+    string orderID = 1; // 系統訂單號
+    string merOrderID = 2; // 商戶訂單號
+    string orderAccount = 3; // 發起帳號
+    string orderName = 4; // 發起名稱
+    int32 orderType = 5; // 代付項目
+    string agAccount = 6; // 代理帳號
+    string beeAccount = 7; // 蜜蜂帳號
+    int32 getPayType = 8; // 接單類型
+    int32 payCard = 9; // 代付卡池
+    int32 paymentSeries = 10; // 交易類型
+    double amount = 11; // 訂單金額
+    double basicFee = 12; // 訂單基礎手續費
+    double timeFee = 13; // 訂單額外時間手續費
+    double goldFee = 14; // 訂單額外時金額續費
+    string receiveBank = 15; // 收款人銀行
+    string receiveName = 16; // 收款人姓名
+    string receiveAccount = 17; // 收款卡號
+    int32 receiveID = 18; // 收款卡ID
+    string payBank = 19; // 付款人銀行
+    string payName = 20; // 付款人姓名
+    string payAccount = 21; // 付款卡號
+    int32 payID = 22; // 付款卡ID
+    int32 status = 23; // 交易狀態 1:等待接單 2:等待代付 3:確認代付 4:匹配失敗 5:訂單超時 6:代付失敗 7:等待派發 8:等待審核
+    string remark = 24; // 備註
+    int32 createTime = 25; // 申請時間
+    int32 matchTime = 26; // 匹配時間
+    int32 takeTime = 27; // 領取時間
+    int32 successTime = 28; // 完成時間
+    GetOptOrderPayDataCertPath certPath = 29; // 出款憑證
+}
+
+message GetOptOrderPayDataCertPath {
+    string certPath_1 = 1; // 第一個憑證
+    string certPath_2 = 2; // 第二個憑證
+    string certPath_3 = 3; // 第三個憑證
+    string certPath_4 = 4; // 第四個憑證
+}
+
+message GetAgReportChangeRequest {
+    optional int32 startTime = 1;
+    optional int32 endTime = 2;
+    optional string orderID = 3;
+    optional int32 type = 4; // 類型
+    optional int32 subType = 5; // 項目
+    int32 page = 6;
+    int32 limit = 7;
+}
+
+message GetAgReportChangeResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetAgReportChangeResult result = 3;
+}
+
+message GetAgReportChangeResult {
+    repeated GetAgReportChangeDatas datas = 1;
+    int32 totalCount = 2;
+}
+
+message GetAgReportChangeDatas {
+    string orderID = 1; // 系統訂單號
+    int32 type = 2; // 類型
+    int32 subType = 3; // 項目
+    int32 changeTime = 4; // 變動時間
+    double changeAmount = 5; // 變動金額
+    double balance = 6; // 帳戶餘額
+    int32 unlockTime = 7; // 解凍時間
+    string remark = 8; // 備註
+}
+
+message GetAgReportResultRequest {
+    optional int32 startTime = 1;
+    optional int32 endTime = 2;
+    int32 page = 3;
+    int32 limit = 4;
+}
+
+message GetAgReportResultResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetAgReportResultResult result = 3;
+}
+
+message GetAgReportResultResult {
+    repeated GetAgReportResultDatas datas = 1;
+    GetAgReportResultTotal total = 2;
+    int32 totalCount = 3;
+}
+
+message GetAgReportResultDatas {
+    int32 resultDate = 1; // 結算日期
+    double basicProfit = 2; // 利潤
+    double otherTimeProfit = 3; // 額外時間利潤
+    double otherGoldProfit = 4; // 額外金額利潤
+    double totalProfit = 5; // 總利潤
+    double resultBalance = 6; // 可用餘額
+}
+
+message GetAgReportResultTotal {
+    double basicProfit = 1; // 利潤
+    double otherTimeProfit = 2; // 額外時間利潤
+    double otherGoldProfit = 3; // 額外金額利潤
+    double totalProfit = 4; // 總利潤
+}
+
+message GetAgOrderBalanceListRequest {
+    optional int32 startTime = 1; // 開始時間
+    optional int32 endTime = 2; // 結束時間
+    optional string account = 3; // 轉入對象
+    optional double amount = 4; // 轉帳金額
+    optional int32 status = 5; // 交易狀態 1:處理中 2:成功 3:失敗
+    optional int32 type = 6; // 類型 1:轉入 2:轉出
+    int32 page = 7;
+    int32 limit = 8;
+}
+
+message GetAgOrderBalanceListResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetAgOrderBalanceListResult result = 3;
+}
+
+message GetAgOrderBalanceListResult {
+    repeated GetAgOrderBalanceListDatas datas = 1;
+    int32 totalCount = 2;
+}
+
+message GetAgOrderBalanceListDatas {
+    int32 type = 1; // 類型 1:轉入 2:轉出
+    string outAccount = 2; // 轉出對象
+    double amount = 3; // 轉帳金額
+    string inAccount = 4; // 轉入對象
+    int32 createTime = 5; // 申請時間
+    int32 successTime = 6; // 完成時間
+    int32 status = 7; // 交易狀態 1:處理中 2:成功 3:失敗
+}
+
+message GetAgOrderCashListRequest {
+    optional int32 startTime = 1; // 開始時間
+    optional int32 endTime = 2; // 結束時間
+    optional string orderID = 3; // 系統訂單號
+    optional int32 paymentSeries = 4; // 交易類型
+    optional int32 status = 5; // 交易狀態 1:處理中 2:成功 3:失敗
+    int32 page = 6;
+    int32 limit = 7;
+}
+
+message GetAgOrderCashListResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetAgOrderCashListResult result = 3;
+}
+
+message GetAgOrderCashListResult {
+    repeated GetAgOrderCashListDatas datas = 1;
+    double totalAmount = 2; // 訂單金額總計
+    double totalFee = 3; // 訂單手續費總計
+    int32 totalCount = 4;
+}
+
+message GetAgOrderCashListDatas {
+    string orderID = 1; // 系統訂單號
+    int32 paymentSeries = 2; // 交易類型
+    int32 createTime = 3; // 申請時間
+    int32 successTime = 4; // 完成時間
+    double amount = 5; // 訂單金額
+    double fee = 6; // 訂單手續費
+    int32 status = 7; // 交易狀態 1:處理中 2:成功 3:失敗
+}
+
+message GetAgOrderCashDataRequest {
+    string orderID = 1; // 系統訂單號
+}
+
+message GetAgOrderCashDataResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetAgOrderCashDataResult result = 3;
+}
+
+message GetAgOrderCashDataResult {
+    string orderID = 1; // 系統訂單號
+    int32 createTime = 2; // 申請時間
+    int32 successTime = 3; // 完成時間
+    int32 paymentSeries = 4; // 交易類型
+    double amount = 5; // 訂單金額
+    double fee = 6; // 訂單手續費
+    int32 status = 7; // 交易狀態 1:處理中 2:成功 3:失敗
+}
+
+message GetMerReportChangeRequest {
+    optional int32 startTime = 1;
+    optional int32 endTime = 2;
+    optional string orderID = 3; // 系統訂單號
+    optional string merOrderID = 4; // 商戶訂單號
+    optional int32 type = 5; // 類型
+    optional int32 subType = 6; // 項目
+    int32 page = 7;
+    int32 limit = 8;
+}
+
+message GetMerReportChangeResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetMerReportChangeResult result = 3;
+}
+
+message GetMerReportChangeResult {
+    repeated GetMerReportChangeDatas datas = 1;
+    int32 totalCount = 2;
+}
+
+message GetMerReportChangeDatas {
+    string orderID = 1; // 系統訂單號
+    string merOrderID = 2; // 商戶訂單號
+    int32 type = 3; // 類型
+    int32 subType = 4; // 項目
+    int32 changeTime = 5; // 變動時間
+    double changeAmount = 6; // 變動金額
+    double balance = 7; // 帳戶餘額
+    int32 unLockTime = 8; // 解凍時間
+    int32 status = 9; // 狀態
+    string remark = 10; // 備註
+}
+
+message GetMerReportResultRequest {
+    optional int32 startTime = 1;
+    optional int32 endTime = 2;
+    int32 page = 3;
+    int32 limit = 4;
+}
+
+message GetMerReportResultResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetMerReportResultResult result = 3;
+}
+
+message GetMerReportResultResult {
+    repeated GetMerReportResultDatas datas = 1;
+    GetMerReportResultTotal total = 2;
+    int32 totalCount = 3;
+}
+
+message GetMerReportResultDatas {
+    int32 resultDate = 1; // 結算日期
+    double colAmount = 2; // 總代收
+    double colBasicFee = 3; // 代收手續費
+    double colOtherFee = 4; // 代收額外手續費
+    double payAmount = 5; // 總代付
+    double payBasicFee = 6; // 代付手續費
+    double payOtherFee = 7; // 代付額外手續費
+    double resultBalance = 8; // 結算餘額
+}
+
+message GetMerReportResultTotal {
+    double colAmount = 1; // 總代收
+    double colBasicFee = 2; // 代收手續費
+    double colOtherFee = 3; // 代收額外手續費
+    double payAmount = 4; // 總代付
+    double payBasicFee = 5; // 代付手續費
+    double payOtherFee = 6; // 代付額外手續費
+}
+
+message GetMerOrderBalanceListRequest {
+    optional int32 startTime = 1; // 開始時間
+    optional int32 endTime = 2; // 結束時間
+    optional string account = 3; // 轉入對象
+    optional double amount = 4; // 轉帳金額
+    optional int32 status = 5; // 交易狀態 1:處理中 2:成功 3:失敗
+    optional int32 type = 6; // 類型 1:轉入 2:轉出
+    int32 page = 7;
+    int32 limit = 8;
+}
+
+message GetMerOrderBalanceListResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetMerOrderBalanceListResult result = 3;
+}
+
+message GetMerOrderBalanceListResult {
+    repeated GetMerOrderBalanceListDatas datas = 1;
+    int32 totalCount = 2;
+}
+
+message GetMerOrderBalanceListDatas {
+    int32 type = 1; // 類型 1:轉入 2:轉出
+    string outAccount = 2; // 轉出對象
+    double amount = 3; // 轉帳金額
+    string inAccount = 4; // 轉入對象
+    int32 createTime = 5; // 申請時間
+    int32 successTime = 6; // 完成時間
+    int32 status = 7; // 交易狀態 1:處理中 2:成功 3:失敗
+}
+
+message GetMerOrderColListRequest {
+    optional int32 startTime = 1; // 開始時間
+    optional int32 endTime = 2; // 結束時間
+    optional string orderID = 3; // 系統訂單號
+    optional string merOrderID = 4; // 商戶訂單號
+    optional int32 paymentSeries = 5; // 交易類型
+    optional int32 status = 6; // 交易狀態 1:等待接單 2:等待代收 3:確認代收 4:匹配失敗 5:訂單超時 6:代收失敗 7:退款
+    int32 page = 7;
+    int32 limit = 8;
+}
+
+message GetMerOrderColListResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetMerOrderColListResult result = 3;
+}
+
+message GetMerOrderColListResult {
+    repeated GetMerOrderColListDatas datas = 1;
+    GetMerOrderColListStatistics statistics = 2; // 統計
+    double totalAmount = 3; // 交易金額總計
+    double totalFee = 4; // 訂單手續費總計
+    int32 totalCount = 5;
+}
+
+message GetMerOrderColListDatas {
+    string orderID = 1; // 系統訂單號
+    string merOrderID = 2; // 商戶訂單號
+    int32 paymentSeries = 3; // 交易類型
+    int32 createTime = 4; // 申請時間
+    int32 successTime = 5; // 完成時間
+    double amount = 6; // 訂單金額
+    double finalAmount = 7; // 成交金額
+    double basicFee = 8; // 訂單基礎手續費
+    double timeFee = 9; // 訂單額外時間手續費
+    double goldFee = 10; // 訂單額外時金額續費
+    int32 status = 11; // 交易狀態 交易狀態 1:等待接單 2:等待代收 3:確認代收 4:匹配失敗 5:訂單超時 6:代收失敗 7:退款
+}
+
+message GetMerOrderColListStatistics {
+    int32 orderCount = 1; // 訂單數量
+    int32 realOrderCount = 2; // 實際訂單數量
+    int32 successOrderCount = 3; // 成功訂單數量
+    double successOrderAmount = 4; // 成功訂單總額
+    double successPercent = 5; // 成功率
+}
+
+message GetMerOrderColDataRequest {
+    string orderID = 1; // 系統訂單號
+}
+
+message GetMerOrderColDataResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetMerOrderColDataResult result = 3;
+}
+
+message GetMerOrderColDataResult {
+    string orderID = 1; // 系統訂單號
+    string merOrderID = 2; // 商戶訂單號
+    int32 createTime = 3; // 申請時間
+    int32 successTime = 4; // 完成時間
+    int32 paymentSeries = 5; // 交易類型
+    double amount = 6; // 訂單金額
+    double basicFee = 7; // 訂單基礎手續費
+    double timeFee = 8; // 訂單額外時間手續費
+    double goldFee = 9; // 訂單額外時金額續費
+    int32 status = 10; // 交易狀態 1:等待接單 2:等待代收 3:確認代收 4:匹配失敗 5:訂單超時 6:代收失敗 7:退款
+    string remark = 11; // 備註
+}
+
+message GetMerOrderPayListRequest {
+    optional int32 startTime = 1; // 開始時間
+    optional int32 endTime = 2; // 結束時間
+    optional string orderID = 3; // 系統訂單號
+    optional string merOrderID = 4; // 商戶訂單號
+    optional int32 paymentSeries = 5; // 交易類型
+    optional int32 status = 6; // 交易狀態 1:等待接單 2:等待代付 3:確認代付 4:匹配失敗 5:訂單超時 6:代付失敗 7:等待派發 8:等待審核
+    int32 page = 7;
+    int32 limit = 8;
+}
+
+message GetMerOrderPayListResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetMerOrderPayListResult result = 3;
+}
+
+message GetMerOrderPayListResult {
+    repeated GetMerOrderPayListDatas datas = 1;
+    double totalAmount = 2; // 交易金額總計
+    double totalFee = 3; // 訂單手續費總計
+    int32 totalCount = 4;
+}
+
+message GetMerOrderPayListDatas {
+    string orderID = 1; // 系統訂單號
+    string merOrderID = 2; // 商戶訂單號
+    int32 paymentSeries = 3; // 交易類型
+    int32 createTime = 4; // 申請時間
+    int32 successTime = 5; // 完成時間
+    double amount = 6; // 訂單金額
+    double basicFee = 7; // 訂單基礎手續費
+    double timeFee = 8; // 訂單額外時間手續費
+    double goldFee = 9; // 訂單額外時金額續費
+    int32 status = 10; // 交易狀態 1:等待接單 2:等待代付 3:確認代付 4:匹配失敗 5:訂單超時 6:代付失敗 7:等待派發 8:等待審核
+}
+
+message GetMerOrderPayDataRequest {
+    string orderID = 1; // 系統訂單號
+}
+
+message GetMerOrderPayDataResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetMerOrderPayDataResult result = 3;
+}
+
+message GetMerOrderPayDataResult {
+    string orderID = 1; // 系統訂單號
+    string merOrderID = 2; // 商戶訂單號
+    int32 createTime = 3; // 申請時間
+    int32 successTime = 4; // 完成時間
+    int32 paymentSeries = 5; // 交易類型
+    double amount = 6; // 訂單金額
+    double basicFee = 7; // 訂單基礎手續費
+    double timeFee = 8; // 訂單額外時間手續費
+    double goldFee = 9; // 訂單額外時金額續費
+    int32 status = 10; // 交易狀態 1:等待接單 2:等待代付 3:確認代付 4:匹配失敗 5:訂單超時 6:代付失敗 7:等待派發 8:等待審核
+    string receiveBank = 11; // 收款人銀行
+    string receiveName = 12; // 收款人姓名
+    string receiveAccount = 13; // 收款卡號
+    GetMerOrderPayDataResultCertPath certPath = 14; // 出款憑證
+}
+
+message GetMerOrderPayDataResultCertPath {
+    string certPath_1 = 1; // 第一個憑證
+    string certPath_2 = 2; // 第二個憑證
+    string certPath_3 = 3; // 第三個憑證
+    string certPath_4 = 4; // 第四個憑證
+}
+
+message GetBeeReportChangeRequest {
+    optional int32 startTime = 1;
+    optional int32 endTime = 2;
+    optional string orderID = 3; // 系統訂單號
+    optional int32 type = 4; // 類型
+    optional int32 subType = 5; // 項目
+    int32 page = 6;
+    int32 limit = 7;
+}
+
+message GetBeeReportChangeResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetBeeReportChangeResult result = 3;
+}
+
+message GetBeeReportChangeResult {
+    repeated GetBeeReportChangeDatas datas = 1;
+    int32 totalCount = 2;
+}
+
+message GetBeeReportChangeDatas {
+    string orderID = 1; // 系統訂單號
+    int32 type = 2; // 類型
+    int32 subType = 3; // 項目
+    int32 changeTime = 4; // 變動時間
+    double changeAmount = 5; // 變動金額
+    double balance = 6; // 帳戶餘額
+}
+
+message GetBeeReportChangeDetailRequest {
+    string orderID = 1; // 系統訂單號
+}
+
+message GetBeeReportChangeDetailResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetBeeReportChangeDetailResult result = 3;
+}
+
+message GetBeeReportChangeDetailResult {
+    string orderID = 1; // 系統訂單號
+    int32 paymentSeries = 2; // 交易類型
+    string receiveBank = 3; // 收款人銀行
+    string receiveAccount = 4; // 收款卡號
+    string receiveName = 5; // 收款人姓名
+    string payBank = 6; // 付款人銀行
+    string payAccount = 7; // 付款卡號
+    string payName = 8; // 付款人姓名
+    double amount = 9; // 訂單金額
+    int32 createTime = 10; // 提交時間
+    int32 updateTime = 11; // 更新時間
+    int32 status = 12; // 交易狀態
+    string beeAccount = 13; // 蜜蜂帳號
+}
+
+message GetBeeOrderBalanceListRequest {
+    optional int32 startTime = 1; // 開始時間
+    optional int32 endTime = 2; // 結束時間
+    optional int32 type = 3; // 類型 1:轉入 2:轉出
+    int32 page = 4;
+    int32 limit = 5;
+}
+
+message GetBeeOrderBalanceListResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetBeeOrderBalanceListResult result = 3;
+}
+
+message GetBeeOrderBalanceListResult {
+    repeated GetBeeOrderBalanceListDatas datas = 1;
+    int32 totalCount = 2;
+}
+
+message GetBeeOrderBalanceListDatas {
+    string orderID = 1; // 系統訂單號
+    double amount = 3; // 轉帳金額
+    string outAccount = 2; // 轉出對象
+    int32 status = 7; // 交易狀態 1:處理中 2:成功 3:失敗
+}
+
+message GetBeeOrderInListRequest {
+    optional int32 startTime = 1; // 開始時間
+    optional int32 endTime = 2; // 結束時間
+    int32 status = 3; // 交易狀態, 處理中:1,已完成:2,已取消:3,已超時:4,審核中:5
+    int32 page = 4;
+    int32 limit = 5;
+}
+
+message GetBeeOrderInListResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetBeeOrderInListResult result = 3;
+}
+
+message GetBeeOrderInListResult {
+    repeated GetBeeOrderInListDatas datas = 1;
+    int32 totalCount = 2;
+}
+
+message GetBeeOrderInListDatas {
+    string orderID = 1; // 系統訂單號
+    double amount = 2; // 訂單金額
+    int32 status = 3; // 交易狀態
+}
+
+message GetBeeOrderInDataRequest {
+    string orderID = 1; // 系統訂單號
+}
+
+message GetBeeOrderInDataResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetBeeOrderInDataResult result = 3;
+}
+
+message GetBeeOrderInDataResult {
+    string beeAccount = 1; // 操作員帳號
+    string orderID = 2; // 系統訂單號
+    double amount = 3; // 訂單金額
+    double profit = 4; // 佣金
+    int32 matchTime = 5; // 匹配時間
+    int32 payMatchOverTime = 6; // 進貨匹配超時時間
+    int32 paymentSeries = 7; // 交易類型
+    int32 status = 8; // 交易狀態
+    string payBank = 9; // 付款人銀行
+    string paySubBank = 10; // 付款人支行
+    string payName = 11; // 付款人姓名
+    string payAccount = 12; // 付款卡號
+    string receiveBank = 13; // 收款人銀行
+    string receiveSubBank = 14; // 收款人支行
+    string receiveName = 15; // 收款人姓名
+    string receiveAccount = 16; // 收款卡號
+}
+
+message GetBeeOrderOutListRequest {
+    optional int32 startTime = 1; // 開始時間
+    optional int32 endTime = 2; // 結束時間
+    int32 status = 3; // 交易狀態, 處理中:1,已完成:2,已取消:3,已超時:4,審核中:5
+    int32 page = 4;
+    int32 limit = 5;
+}
+
+message GetBeeOrderOutListResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetBeeOrderOutListResult result = 3;
+}
+
+message GetBeeOrderOutListResult {
+    repeated GetBeeOrderOutListDatas datas = 1;
+    int32 totalCount = 2;
+}
+
+message GetBeeOrderOutListDatas {
+    string orderID = 1; // 系統訂單號
+    double amount = 2; // 訂單金額
+    int32 status = 3; // 交易狀態
+}
+
+message GetBeeOrderOutDataRequest {
+    string orderID = 1; // 系統訂單號
+}
+
+message GetBeeOrderOutDataResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetBeeOrderOutDataResult result = 3;
+}
+
+message GetBeeOrderOutDataResult {
+    string beeAccount = 1; // 操作員帳號
+    string orderID = 2; // 系統訂單號
+    double amount = 3; // 訂單金額
+    int32 matchTime = 4; // 匹配時間
+    int32 colMatchOverTime = 5; // 出貨匹配超時時間
+    int32 status = 6; // 交易狀態
+    string payName = 7; // 付款人姓名
+    string receiveBank = 8; // 收款人銀行
+    string receiveSubBank = 9; // 收款人支行
+    string receiveName = 10; // 收款人姓名
+    string receiveAccount = 11; // 收款卡號
+    int32 paymentSeries = 12; // 收款類型
+}
+
+message GetBeeOrderLatelyListResponse {
+    int32 code = 1;
+    string msg = 2;
+    GetBeeOrderLatelyListResult result = 3;
+}
+
+message GetBeeOrderLatelyListResult {
+   repeated GetBeeOrderLatelyListResultIn in = 1;
+   repeated GetBeeOrderLatelyListResultOut out = 2;
+}
+
+message GetBeeOrderLatelyListResultIn {
+    string orderID = 1; // 系統訂單號
+    double amount = 2; // 訂單金額
+    int32 status = 3; // 交易狀態
+}
+
+message GetBeeOrderLatelyListResultOut {
+    string orderID = 1; // 系統訂單號
+    double amount = 2; // 訂單金額
+    int32 status = 3; // 交易狀態
+}
+
+message GetBeeOrderListResponse {
+    int32 code = 1;
+    string msg = 2;
+    repeated GetBeeOrderListResult result = 3;
+}
+
+message GetBeeOrderListResult {
+    string orderID = 1; // 系統訂單號
+    double amount = 2; // 訂單金額
+    int32 payUnMatchOverTime = 3; // 進貨未匹配超時時間
+    int32 paymentSeries = 4; // 交易類型
+}
+
+message CronRequest {
+    int32 id = 1; // 排程id
+    optional int32 date = 2; // 指定日期
+}
+
+message CronResponse {
+    int32 code = 1;
+    string msg = 2;
+    int32 total = 3;
+}
+
+service camilaService {
+    // 總控後台
+    rpc GetAdminIndex(GetAdminIndexRequest) returns (GetAdminIndexResponse) {}; // 取得首頁統計
+    rpc GetAdminBigData(GetAdminBigDataRequest) returns (GetAdminBigDataResponse) {}; // 取得大數據統計
+
+    // ==================== 運營員後台功能 ====================
+    // 報表
+    // < 即時更新 >
+    rpc GetOptReportChange(GetOptReportChangeRequest) returns (GetOptReportChangeResponse) {}; // 系統帳變
+    rpc GetOptReportAgentChange(GetOptReportAgentChangeRequest) returns (GetOptReportAgentChangeResponse) {}; // 代理報表-帳變紀錄
+    rpc GetOptReportMerchantChange(GetOptReportMerchantChangeRequest) returns (GetOptReportMerchantChangeResponse) {}; // 商戶報表-帳變紀錄
+    rpc GetOptReportBeeChange(GetOptReportBeeChangeRequest) returns (GetOptReportBeeChangeResponse) {}; // 蜜蜂報表-帳變紀錄
+    rpc GetOptReportBalance(GetOptReportBalanceRequest) returns (GetOptReportBalanceResponse) {}; // 即時餘額
+    rpc GetOptReportResultBee(GetOptReportResultBeeRequest) returns (GetOptReportResultBeeResponse) {}; // 蜜蜂報表-結算紀錄
+    rpc GetOptReportBeeNoPay(GetOptReportBeeNoPayRequest) returns (GetOptReportBeeNoPayResponse) {}; // 蜜蜂報表-未結算紀錄
+
+    // < 過帳更新 >
+    rpc GetOptReportAgent(GetOptReportAgentRequest) returns (GetOptReportAgentResponse) {}; // 代理報表
+    rpc GetOptReportAgentMer(GetOptReportAgentMerRequest) returns (GetOptReportAgentMerResponse) {}; // 代理報表-代理號商戶總覽
+    rpc GetOptReportMerchant(GetOptReportMerchantRequest) returns (GetOptReportMerchantResponse) {}; // 商戶報表
+    rpc GetOptReportMerchantPayment(GetOptReportMerchantPaymentRequest) returns (GetOptReportMerchantPaymentResponse) {}; // 商戶報表-商戶通道詳細
+    // 蜜蜂報表
+    rpc GetOptReportProfit(GetOptReportProfitRequest) returns (GetOptReportProfitResponse) {}; // 利潤報表
+    rpc GetOptReportCustomer(GetOptReportCustomerRequest) returns (GetOptReportCustomerResponse) {}; // 客服接單總匯
+    rpc GetOptReportPayment(GetOptReportPaymentRequest) returns (GetOptReportPaymentResponse) {}; // 金流次數統計
+    rpc GetOptReportView(GetOptReportViewRequest) returns (GetOptReportViewResponse) {}; // 出入帳目總覽
+
+    // 訂單
+    rpc GetOptOrderBalanceList(GetOptOrderBalanceListRequest) returns (GetOptOrderBalanceListResponse) {} // 訂單餘額轉移列表取得
+    rpc GetOptOrderManualList(GetOptOrderManualListRequest) returns (GetOptOrderManualListResponse) {} // 訂單人工補提列表取得
+    rpc GetOptOrderReplenishList(GetOptOrderReplenishListRequest) returns (GetOptOrderReplenishListResponse) {} // 訂單補入提出列表取得
+    rpc GetOptOrderReplenishData(GetOptOrderReplenishDataRequest) returns (GetOptOrderReplenishDataResponse) {} // 訂單補入提出資料取得
+    rpc GetOptOrderColList(GetOptOrderColListRequest) returns (GetOptOrderColListResponse) {} // 訂單代收列表取得
+    rpc GetOptOrderColData(GetOptOrderColDataRequest) returns (GetOptOrderColDataResponse) {} // 訂單代收資料取得
+    rpc GetOptOrderPayList(GetOptOrderPayListRequest) returns (GetOptOrderPayListResponse) {} // 訂單代付列表取得
+    rpc GetOptOrderPayData(GetOptOrderPayDataRequest) returns (GetOptOrderPayDataResponse) {} // 訂單代付資料取得
+
+    // ===================== 代理後台功能 =====================
+    // 報表
+    // < 即時更新 >
+    rpc GetAgReportChange(GetAgReportChangeRequest) returns (GetAgReportChangeResponse) {}; // 帳變紀錄
+    // 數據報表
+
+    // < 過帳更新 >
+    rpc GetAgReportResult(GetAgReportResultRequest) returns (GetAgReportResultResponse) {}; // 結算紀錄
+
+    // 訂單
+    rpc GetAgOrderBalanceList(GetAgOrderBalanceListRequest) returns (GetAgOrderBalanceListResponse) {} // 訂單餘額轉移列表取得
+    rpc GetAgOrderCashList(GetAgOrderCashListRequest) returns (GetAgOrderCashListResponse) {} // 訂單利潤提現列表取得
+    rpc GetAgOrderCashData(GetAgOrderCashDataRequest) returns (GetAgOrderCashDataResponse) {} // 訂單利潤提現資料取得
+
+    // ===================== 商戶後台功能 =====================
+    // 報表
+    // < 即時更新 >
+    rpc GetMerReportChange(GetMerReportChangeRequest) returns (GetMerReportChangeResponse) {}; // 帳變紀錄
+
+    // < 過帳更新 >
+    rpc GetMerReportResult(GetMerReportResultRequest) returns (GetMerReportResultResponse) {}; // 結算紀錄
+    
+    // 訂單
+    rpc GetMerOrderBalanceList(GetMerOrderBalanceListRequest) returns (GetMerOrderBalanceListResponse) {} // 訂單餘額轉移列表取得
+    rpc GetMerOrderColList(GetMerOrderColListRequest) returns (GetMerOrderColListResponse) {} // 訂單代收列表取得
+    rpc GetMerOrderColData(GetMerOrderColDataRequest) returns (GetMerOrderColDataResponse) {} // 訂單代收資料取得
+    rpc GetMerOrderPayList(GetMerOrderPayListRequest) returns (GetMerOrderPayListResponse) {} // 訂單代付列表取得
+    rpc GetMerOrderPayData(GetMerOrderPayDataRequest) returns (GetMerOrderPayDataResponse) {} // 訂單代付資料取得
+
+    // ===================== 蜜蜂後台功能 =====================
+    // 報表
+    // < 即時更新 >
+    rpc GetBeeReportChange(GetBeeReportChangeRequest) returns (GetBeeReportChangeResponse) {}; // 帳變紀錄
+    rpc GetBeeReportChangeDetail(GetBeeReportChangeDetailRequest) returns (GetBeeReportChangeDetailResponse) {}; // 帳變紀錄詳情
+
+    // 訂單
+    rpc GetBeeOrderBalanceList(GetBeeOrderBalanceListRequest) returns (GetBeeOrderBalanceListResponse) {} // 訂單餘額轉移列表取得
+    rpc GetBeeOrderInList(GetBeeOrderInListRequest) returns (GetBeeOrderInListResponse) {} // 訂單進貨列表取得
+    rpc GetBeeOrderInData(GetBeeOrderInDataRequest) returns (GetBeeOrderInDataResponse) {} // 訂單進貨資料取得
+    rpc GetBeeOrderOutList(GetBeeOrderOutListRequest) returns (GetBeeOrderOutListResponse) {} // 訂單出貨列表取得
+    rpc GetBeeOrderOutData(GetBeeOrderOutDataRequest) returns (GetBeeOrderOutDataResponse) {} // 訂單出貨資料取得
+    rpc GetBeeOrderLatelyList(EmptyRequest) returns (GetBeeOrderLatelyListResponse) {} // 訂單近期進出貨列表取得
+    rpc GetBeeOrderList(EmptyRequest) returns (GetBeeOrderListResponse) {} // 訂單列表取得
+
+    // ===================== 排程使用 =====================
+    rpc Cron(CronRequest) returns (CronResponse) {} // 排程
+}
