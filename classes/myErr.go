@@ -8,8 +8,8 @@ func ErrorInit() *MyErr {
 
 const (
 	// 共用
-	SystemError    = -999
-	RequestSuccess = 0
+	SystemError = -999
+	Success     = 0
 
 	// 請求檢查參數用錯誤
 	ParserRequestBodyError = 1
@@ -49,8 +49,8 @@ func (e *MyErr) Msg(code int32) string {
 func (e *MyErr) result(code int32) string {
 	errCode := map[int32]string{
 		// 共用
-		SystemError:    "系統錯誤",
-		RequestSuccess: "請求成功",
+		SystemError: "系統錯誤",
+		Success:     "成功",
 
 		// 請求檢查參數用錯誤
 		ParserRequestBodyError: "解析請求Body資料錯誤",

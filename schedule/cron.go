@@ -98,5 +98,5 @@ func (schedule *Schedule) doCron(cron *Job) {
 
 	// 紀錄 執行完成
 	traceLog.SetRequestTime(schedule.tools.GetDownRunTime(t))
-	traceLog.PrintInfo(Success)
+	traceLog.PrintInfo(schedule.myErr.Msg(classes.Success))
 }

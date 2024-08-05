@@ -14,7 +14,7 @@ type ChanelModelTasks struct {
 	Args       string `gorm:"type:varchar(255); default:''; not null; comment:'參數'" json:"args"`
 	Headers    string `gorm:"type:varchar(255); default:''; not null; comment:'表頭'" json:"headers"`
 	Execute    int64  `gorm:"type:int(10); default:0; not null; comment:'執行時間'" json:"execute"`
-	Status     int32  `gorm:"index; type:int(10); default:0; not null; comment:'狀態 1:未執行,2:已執行'" json:"status"`
+	Status     int32  `gorm:"index; type:int(10); default:0; not null; comment:'狀態 1:未執行,2:已執行,3:異常'" json:"status"`
 	Remark     string `gorm:"type:varchar(255); default:''; not null; comment:'備註'" json:"remark"`
 	CreateTime int64  `gorm:"type:int(10); default:0; not null; comment:'建立時間'" json:"create_time"`
 	UpdateTime int64  `gorm:"type:int(10); default:0; not null; comment:'更新時間'" json:"update_time"`

@@ -2,7 +2,9 @@ package schedule
 
 import (
 	"chanel/classes"
+	"chanel/lib"
 	"chanel/structs"
+	"fmt"
 	"net/http"
 	"time"
 )
@@ -13,8 +15,32 @@ func (schedule *Schedule) doTask(task *Job) {
 	traceLog.SetTopic("schedule")
 	traceLog.SetMethod("doTask")
 	traceLog.SetArgs(task)
-
 	t := time.Now()
+
+	defer func() {
+		if err := recover(); err != nil {
+			// 更新 任務狀態
+			updateDatas := structs.ChanelModelTasks{
+				Status:     3, // 異常
+				UpdateTime: schedule.tools.NowUnix(),
+			}
+			uErr := schedule.mysql.ChanelDB.Repository.Tasks.UpdateTask(updateDatas, task.ID)
+
+			if uErr != nil {
+				// 紀錄 更新任務狀態錯誤
+				traceLog.SetRequestTime(schedule.tools.GetDownRunTime(t))
+				traceLog.SetArgs(updateDatas)
+				traceLog.SetCode(classes.MysqlUpdateError)
+				traceLog.PrintError(schedule.myErr.Msg(classes.MysqlUpdateError), uErr)
+			}
+			// 紀錄 Panic
+			traceLog.SetRequestTime(schedule.tools.GetDownRunTime(t))
+			traceLog.SetArgs(task)
+			traceLog.SetCode(classes.SystemError)
+			traceLog.PrintError(fmt.Sprintf("%s, doTask.Panic", schedule.myErr.Msg(classes.SystemError)), lib.PanicParser(err))
+			return
+		}
+	}()
 	traceID, err := schedule.tools.NewTraceID()
 
 	if err != nil {
@@ -97,5 +123,5 @@ func (schedule *Schedule) doTask(task *Job) {
 
 	// 紀錄 執行完成
 	traceLog.SetRequestTime(schedule.tools.GetDownRunTime(t))
-	traceLog.PrintInfo(Success)
+	traceLog.PrintInfo(schedule.myErr.Msg(classes.Success))
 }

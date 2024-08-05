@@ -44,10 +44,9 @@ type Job struct {
 }
 
 const (
-	Success = "SUCCESS"
-	JobGap  = 100 * time.Millisecond // 間隔時間
-	Task    = 1                      // 任務
-	Cron    = 2                      // 排程
+	JobGap = 100 * time.Millisecond // 間隔時間
+	Task   = 1                      // 任務
+	Cron   = 2                      // 排程
 )
 
 func ScheduleInit(config *config.Config, ctx context.Context, mysql *database.Mysql, redis *database.Redis) *Schedule {

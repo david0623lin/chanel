@@ -7,7 +7,6 @@ import (
 	"chanel/controller"
 	"chanel/database"
 	"chanel/lib"
-	"chanel/schedule"
 	"context"
 	"fmt"
 	"sync"
@@ -22,7 +21,6 @@ type Server struct {
 	myErr             *classes.MyErr
 	api               *api.Api
 	controller        *controller.Controoller
-	schedule          *schedule.Schedule
 	GracefulWaitGroup sync.WaitGroup // 優雅退出使用
 }
 

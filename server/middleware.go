@@ -373,7 +373,7 @@ func (srv *Server) response(c *gin.Context) {
 			Error:   response.Error.Error(),
 		})
 	} else {
-		response.Message = srv.tools.FormatMsg(srv.myErr.Msg(classes.RequestSuccess), "")
+		response.Message = srv.tools.FormatMsg(srv.myErr.Msg(classes.Success), "")
 
 		// 如果不需要紀錄回傳結果, 自行註解
 		traceLog.SetResponse(response.Result)
