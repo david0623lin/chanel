@@ -1,14 +1,6 @@
 package structs
 
 const (
-	// 請求 Panic
-	SystemErrorCode = -999
-	SystemErrorMsg  = "SYSTEM ERROR"
-	// 請求 Err
-	RequestErrorMsg = "ERROR"
-	// 請求成功
-	RequestSuccessMsg = "SUCCESS"
-
 	// 請求 Headers 固定欄位
 	SessionID = "Sid"
 	TraceID   = "Tid"

@@ -23,9 +23,9 @@ func (srv *Server) Available(r *gin.Engine) gin.HandlerFunc {
 		defer func() {
 			if err := recover(); err != nil {
 				c.Set("Response", structs.Response{
-					Code:    structs.SystemErrorCode,
-					Message: srv.tools.FormatMsg(structs.SystemErrorMsg, ""),
-					Error:   srv.tools.FormatErr(structs.SystemErrorMsg, "Available.Panic", lib.PanicParser(err)),
+					Code:    classes.SystemError,
+					Message: srv.tools.FormatMsg(srv.myErr.Msg(classes.SystemError), ""),
+					Error:   srv.tools.FormatErr(srv.myErr.Msg(classes.SystemError), "Available.Panic", lib.PanicParser(err)),
 				})
 				srv.response(c)
 			}
@@ -46,9 +46,9 @@ func (srv *Server) Cors(c *gin.Context) {
 	defer func() {
 		if err := recover(); err != nil {
 			c.Set("Response", structs.Response{
-				Code:    structs.SystemErrorCode,
-				Message: srv.tools.FormatMsg(structs.SystemErrorMsg, ""),
-				Error:   srv.tools.FormatErr(structs.SystemErrorMsg, "Cors.Panic", lib.PanicParser(err)),
+				Code:    classes.SystemError,
+				Message: srv.tools.FormatMsg(srv.myErr.Msg(classes.SystemError), ""),
+				Error:   srv.tools.FormatErr(srv.myErr.Msg(classes.SystemError), "Cors.Panic", lib.PanicParser(err)),
 			})
 			srv.response(c)
 		}
@@ -79,9 +79,9 @@ func (srv *Server) Maintain(c *gin.Context) {
 	defer func() {
 		if err := recover(); err != nil {
 			c.Set("Response", structs.Response{
-				Code:    structs.SystemErrorCode,
-				Message: srv.tools.FormatMsg(structs.SystemErrorMsg, ""),
-				Error:   srv.tools.FormatErr(structs.SystemErrorMsg, "Maintain.Panic", lib.PanicParser(err)),
+				Code:    classes.SystemError,
+				Message: srv.tools.FormatMsg(srv.myErr.Msg(classes.SystemError), ""),
+				Error:   srv.tools.FormatErr(srv.myErr.Msg(classes.SystemError), "Maintain.Panic", lib.PanicParser(err)),
 			})
 			srv.response(c)
 		}
@@ -92,7 +92,7 @@ func (srv *Server) Maintain(c *gin.Context) {
 	if err != nil {
 		c.Set("Response", structs.Response{
 			Code:    classes.CacheError,
-			Message: srv.tools.FormatMsg(structs.RequestErrorMsg, ""),
+			Message: srv.tools.FormatMsg(srv.myErr.Msg(classes.CacheError), ""),
 			Error:   srv.tools.FormatErr(srv.myErr.Msg(classes.CacheError), "Maintain.Exists", err),
 		})
 		srv.response(c)
@@ -112,9 +112,9 @@ func (srv *Server) Session(c *gin.Context) {
 	defer func() {
 		if err := recover(); err != nil {
 			c.Set("Response", structs.Response{
-				Code:    structs.SystemErrorCode,
-				Message: srv.tools.FormatMsg(structs.SystemErrorMsg, ""),
-				Error:   srv.tools.FormatErr(structs.SystemErrorMsg, "Session.Panic", lib.PanicParser(err)),
+				Code:    classes.SystemError,
+				Message: srv.tools.FormatMsg(srv.myErr.Msg(classes.SystemError), ""),
+				Error:   srv.tools.FormatErr(srv.myErr.Msg(classes.SystemError), "Session.Panic", lib.PanicParser(err)),
 			})
 			srv.response(c)
 		}
@@ -158,7 +158,7 @@ func (srv *Server) Session(c *gin.Context) {
 		if err != nil {
 			c.Set("Response", structs.Response{
 				Code:    classes.CreateTraceIdError,
-				Message: srv.tools.FormatMsg(structs.RequestErrorMsg, ""),
+				Message: srv.tools.FormatMsg(srv.myErr.Msg(classes.CreateTraceIdError), ""),
 				Error:   srv.tools.FormatErr(srv.myErr.Msg(classes.CreateTraceIdError), "Session.NewTraceID", err),
 			})
 			srv.response(c)
@@ -187,9 +187,9 @@ func (srv *Server) Service(c *gin.Context) {
 
 		if err := recover(); err != nil {
 			c.Set("Response", structs.Response{
-				Code:    structs.SystemErrorCode,
-				Message: srv.tools.FormatMsg(structs.SystemErrorMsg, ""),
-				Error:   srv.tools.FormatErr(structs.SystemErrorMsg, "Service.Panic", lib.PanicParser(err)),
+				Code:    classes.SystemError,
+				Message: srv.tools.FormatMsg(srv.myErr.Msg(classes.SystemError), ""),
+				Error:   srv.tools.FormatErr(srv.myErr.Msg(classes.SystemError), "Service.Panic", lib.PanicParser(err)),
 			})
 			srv.response(c)
 		}
@@ -212,7 +212,7 @@ func (srv *Server) Service(c *gin.Context) {
 		if err != nil {
 			c.Set("Response", structs.Response{
 				Code:    classes.ParseUrlParamsError,
-				Message: srv.tools.FormatMsg(structs.RequestErrorMsg, ""),
+				Message: srv.tools.FormatMsg(srv.myErr.Msg(classes.ParseUrlParamsError), ""),
 				Error:   srv.tools.FormatErr(srv.myErr.Msg(classes.ParseUrlParamsError), "Service.url.Parse", err),
 			})
 			srv.response(c)
@@ -238,7 +238,7 @@ func (srv *Server) Service(c *gin.Context) {
 		if err != nil {
 			c.Set("Response", structs.Response{
 				Code:    classes.IoReadBodyError,
-				Message: srv.tools.FormatMsg(structs.RequestErrorMsg, ""),
+				Message: srv.tools.FormatMsg(srv.myErr.Msg(classes.IoReadBodyError), ""),
 				Error:   srv.tools.FormatErr(srv.myErr.Msg(classes.IoReadBodyError), "Service.io.ReadAll", err),
 			})
 			srv.response(c)
@@ -248,7 +248,7 @@ func (srv *Server) Service(c *gin.Context) {
 		if err != nil {
 			c.Set("Response", structs.Response{
 				Code:    classes.JsonUnmarshalError,
-				Message: srv.tools.FormatMsg(structs.RequestErrorMsg, ""),
+				Message: srv.tools.FormatMsg(srv.myErr.Msg(classes.JsonUnmarshalError), ""),
 				Error:   srv.tools.FormatErr(srv.myErr.Msg(classes.JsonUnmarshalError), "Service.Unmarshal", err),
 			})
 			srv.response(c)
@@ -267,7 +267,7 @@ func (srv *Server) Service(c *gin.Context) {
 			if err != nil {
 				c.Set("Response", structs.Response{
 					Code:    classes.JsonMarshalError,
-					Message: srv.tools.FormatMsg(structs.RequestErrorMsg, ""),
+					Message: srv.tools.FormatMsg(srv.myErr.Msg(classes.JsonMarshalError), ""),
 					Error:   srv.tools.FormatErr(srv.myErr.Msg(classes.JsonMarshalError), "Service.Marshal", err),
 				})
 				srv.response(c)
@@ -283,7 +283,7 @@ func (srv *Server) Service(c *gin.Context) {
 			if err != nil {
 				c.Set("Response", structs.Response{
 					Code:    classes.CacheError,
-					Message: srv.tools.FormatMsg(structs.RequestErrorMsg, ""),
+					Message: srv.tools.FormatMsg(srv.myErr.Msg(classes.CacheError), ""),
 					Error:   srv.tools.FormatErr(srv.myErr.Msg(classes.CacheError), "Service.SetNX", err),
 				})
 				srv.response(c)
@@ -302,7 +302,6 @@ func (srv *Server) Service(c *gin.Context) {
 		c.Next()
 		srv.response(c)
 	}
-	// }
 }
 
 func (srv *Server) response(c *gin.Context) {
@@ -374,7 +373,7 @@ func (srv *Server) response(c *gin.Context) {
 			Error:   response.Error.Error(),
 		})
 	} else {
-		response.Message = srv.tools.FormatMsg(structs.RequestSuccessMsg, "")
+		response.Message = srv.tools.FormatMsg(srv.myErr.Msg(classes.RequestSuccess), "")
 
 		// 如果不需要紀錄回傳結果, 自行註解
 		traceLog.SetResponse(response.Result)

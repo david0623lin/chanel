@@ -26,7 +26,7 @@ func (service *Service) GetTasks(params structs.GetTasksRequest, ctx context.Con
 
 	if err != nil {
 		response.Code = classes.MysqlSearchError
-		response.Message = service.tools.FormatMsg(structs.RequestErrorMsg, "")
+		response.Message = service.tools.FormatMsg(service.myErr.Msg(classes.MysqlSearchError), "")
 		response.Error = service.tools.FormatErr(service.myErr.Msg(classes.MysqlSearchError), "Tasks.GetTasks", err)
 		return response
 	}
@@ -39,7 +39,7 @@ func (service *Service) GetTasks(params structs.GetTasksRequest, ctx context.Con
 
 			if err != nil {
 				response.Code = classes.JsonUnmarshalError
-				response.Message = service.tools.FormatMsg(structs.RequestErrorMsg, "")
+				response.Message = service.tools.FormatMsg(service.myErr.Msg(classes.JsonUnmarshalError), "")
 				response.Error = service.tools.FormatErr(service.myErr.Msg(classes.JsonUnmarshalError), "Args.Unmarshal", err)
 				return response
 			}
@@ -52,7 +52,7 @@ func (service *Service) GetTasks(params structs.GetTasksRequest, ctx context.Con
 
 			if err != nil {
 				response.Code = classes.JsonUnmarshalError
-				response.Message = service.tools.FormatMsg(structs.RequestErrorMsg, "")
+				response.Message = service.tools.FormatMsg(service.myErr.Msg(classes.JsonUnmarshalError), "")
 				response.Error = service.tools.FormatErr(service.myErr.Msg(classes.JsonUnmarshalError), "Headers.Unmarshal", err)
 				return response
 			}
@@ -97,7 +97,7 @@ func (service *Service) CreateTask(params structs.CreateTaskRequest, ctx context
 
 	if err != nil {
 		response.Code = classes.JsonMarshalError
-		response.Message = service.tools.FormatMsg(structs.RequestErrorMsg, "")
+		response.Message = service.tools.FormatMsg(service.myErr.Msg(classes.JsonMarshalError), "")
 		response.Error = service.tools.FormatErr(service.myErr.Msg(classes.JsonMarshalError), "Args.Marshal", err)
 		return response
 	}
@@ -107,7 +107,7 @@ func (service *Service) CreateTask(params structs.CreateTaskRequest, ctx context
 
 	if err != nil {
 		response.Code = classes.JsonMarshalError
-		response.Message = service.tools.FormatMsg(structs.RequestErrorMsg, "")
+		response.Message = service.tools.FormatMsg(service.myErr.Msg(classes.JsonMarshalError), "")
 		response.Error = service.tools.FormatErr(service.myErr.Msg(classes.JsonMarshalError), "Headers.Marshal", err)
 		return response
 	}
@@ -132,7 +132,7 @@ func (service *Service) CreateTask(params structs.CreateTaskRequest, ctx context
 
 	if err != nil {
 		response.Code = classes.MysqlInsertError
-		response.Message = service.tools.FormatMsg(structs.RequestErrorMsg, "")
+		response.Message = service.tools.FormatMsg(service.myErr.Msg(classes.MysqlInsertError), "")
 		response.Error = service.tools.FormatErr(service.myErr.Msg(classes.MysqlInsertError), "Tasks.CreateTask", err)
 		return response
 	}
@@ -166,7 +166,7 @@ func (service *Service) UpdateTask(params structs.UpdateTaskRequest, ctx context
 
 	if err != nil {
 		response.Code = classes.MysqlSearchError
-		response.Message = service.tools.FormatMsg(structs.RequestErrorMsg, "")
+		response.Message = service.tools.FormatMsg(service.myErr.Msg(classes.MysqlSearchError), "")
 		response.Error = service.tools.FormatErr(service.myErr.Msg(classes.MysqlSearchError), "Tasks.GetTaskByID", err)
 		return response
 	}
@@ -234,7 +234,7 @@ func (service *Service) UpdateTask(params structs.UpdateTaskRequest, ctx context
 
 		if err != nil {
 			response.Code = classes.JsonMarshalError
-			response.Message = service.tools.FormatMsg(structs.RequestErrorMsg, "")
+			response.Message = service.tools.FormatMsg(service.myErr.Msg(classes.JsonMarshalError), "")
 			response.Error = service.tools.FormatErr(service.myErr.Msg(classes.JsonMarshalError), "Args.Marshal", err)
 			return response
 		}
@@ -256,7 +256,7 @@ func (service *Service) UpdateTask(params structs.UpdateTaskRequest, ctx context
 
 		if err != nil {
 			response.Code = classes.JsonMarshalError
-			response.Message = service.tools.FormatMsg(structs.RequestErrorMsg, "")
+			response.Message = service.tools.FormatMsg(service.myErr.Msg(classes.JsonMarshalError), "")
 			response.Error = service.tools.FormatErr(service.myErr.Msg(classes.JsonMarshalError), "Headers.Marshal", err)
 			return response
 		}
@@ -305,7 +305,7 @@ func (service *Service) UpdateTask(params structs.UpdateTaskRequest, ctx context
 
 	if err != nil {
 		response.Code = classes.MysqlInsertError
-		response.Message = service.tools.FormatMsg(structs.RequestErrorMsg, "")
+		response.Message = service.tools.FormatMsg(service.myErr.Msg(classes.MysqlInsertError), "")
 		response.Error = service.tools.FormatErr(service.myErr.Msg(classes.MysqlInsertError), "Tasks.UpdateTask", err)
 		return response
 	}
@@ -328,7 +328,7 @@ func (service *Service) DeleteTask(params structs.DeleteTaskRequest, ctx context
 
 	if err != nil {
 		response.Code = classes.MysqlDeleteError
-		response.Message = service.tools.FormatMsg(structs.RequestErrorMsg, "")
+		response.Message = service.tools.FormatMsg(service.myErr.Msg(classes.MysqlDeleteError), "")
 		response.Error = service.tools.FormatErr(service.myErr.Msg(classes.MysqlDeleteError), "Tasks.DeleteTaskByID", err)
 		return response
 	}

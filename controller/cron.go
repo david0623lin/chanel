@@ -65,7 +65,7 @@ func (ctl *Controoller) CreateCron(c *gin.Context) {
 	// 參數處理
 	if err := c.ShouldBindJSON(&params); err != nil {
 		response.Code = classes.ParserRequestBodyError
-		response.Message = ctl.tools.FormatMsg(structs.RequestErrorMsg, "")
+		response.Message = ctl.tools.FormatMsg(ctl.myErr.Msg(classes.ParserRequestBodyError), "")
 		response.Error = ctl.tools.FormatErr(ctl.myErr.Msg(classes.ParserRequestBodyError), "CreateCron.ShouldBindJSON", err)
 		return
 	}
@@ -100,7 +100,7 @@ func (ctl *Controoller) UpdateCron(c *gin.Context) {
 	// 參數處理
 	if err := c.ShouldBindJSON(&params); err != nil {
 		response.Code = classes.ParserRequestBodyError
-		response.Message = ctl.tools.FormatMsg(structs.RequestErrorMsg, "")
+		response.Message = ctl.tools.FormatMsg(ctl.myErr.Msg(classes.ParserRequestBodyError), "")
 		response.Error = ctl.tools.FormatErr(ctl.myErr.Msg(classes.ParserRequestBodyError), "UpdateCron.ShouldBindJSON", err)
 		return
 	}

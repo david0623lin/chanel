@@ -19,7 +19,7 @@ func (service *Service) GetCrons(params structs.GetCronsRequest, ctx context.Con
 
 	if err != nil {
 		response.Code = classes.MysqlSearchError
-		response.Message = service.tools.FormatMsg(structs.RequestErrorMsg, "")
+		response.Message = service.tools.FormatMsg(service.myErr.Msg(classes.MysqlSearchError), "")
 		response.Error = service.tools.FormatErr(service.myErr.Msg(classes.MysqlSearchError), "Crons.GetCrons", err)
 		return response
 	}
@@ -32,7 +32,7 @@ func (service *Service) GetCrons(params structs.GetCronsRequest, ctx context.Con
 
 			if err != nil {
 				response.Code = classes.JsonUnmarshalError
-				response.Message = service.tools.FormatMsg(structs.RequestErrorMsg, "")
+				response.Message = service.tools.FormatMsg(service.myErr.Msg(classes.JsonUnmarshalError), "")
 				response.Error = service.tools.FormatErr(service.myErr.Msg(classes.JsonUnmarshalError), "Args.Unmarshal", err)
 				return response
 			}
@@ -45,7 +45,7 @@ func (service *Service) GetCrons(params structs.GetCronsRequest, ctx context.Con
 
 			if err != nil {
 				response.Code = classes.JsonUnmarshalError
-				response.Message = service.tools.FormatMsg(structs.RequestErrorMsg, "")
+				response.Message = service.tools.FormatMsg(service.myErr.Msg(classes.JsonUnmarshalError), "")
 				response.Error = service.tools.FormatErr(service.myErr.Msg(classes.JsonUnmarshalError), "Headers.Unmarshal", err)
 				return response
 			}
@@ -90,7 +90,7 @@ func (service *Service) CreateCron(params structs.CreateCronRequest, ctx context
 
 	if err != nil {
 		response.Code = classes.JsonMarshalError
-		response.Message = service.tools.FormatMsg(structs.RequestErrorMsg, "")
+		response.Message = service.tools.FormatMsg(service.myErr.Msg(classes.JsonMarshalError), "")
 		response.Error = service.tools.FormatErr(service.myErr.Msg(classes.JsonMarshalError), "Args.Marshal", err)
 		return response
 	}
@@ -100,7 +100,7 @@ func (service *Service) CreateCron(params structs.CreateCronRequest, ctx context
 
 	if err != nil {
 		response.Code = classes.JsonMarshalError
-		response.Message = service.tools.FormatMsg(structs.RequestErrorMsg, "")
+		response.Message = service.tools.FormatMsg(service.myErr.Msg(classes.JsonMarshalError), "")
 		response.Error = service.tools.FormatErr(service.myErr.Msg(classes.JsonMarshalError), "Headers.Marshal", err)
 		return response
 	}
@@ -125,7 +125,7 @@ func (service *Service) CreateCron(params structs.CreateCronRequest, ctx context
 
 	if err != nil {
 		response.Code = classes.MysqlInsertError
-		response.Message = service.tools.FormatMsg(structs.RequestErrorMsg, "")
+		response.Message = service.tools.FormatMsg(service.myErr.Msg(classes.MysqlInsertError), "")
 		response.Error = service.tools.FormatErr(service.myErr.Msg(classes.MysqlInsertError), "Crons.CreateCron", err)
 		return response
 	}
@@ -159,7 +159,7 @@ func (service *Service) UpdateCron(params structs.UpdateCronRequest, ctx context
 
 	if err != nil {
 		response.Code = classes.MysqlSearchError
-		response.Message = service.tools.FormatMsg(structs.RequestErrorMsg, "")
+		response.Message = service.tools.FormatMsg(service.myErr.Msg(classes.MysqlSearchError), "")
 		response.Error = service.tools.FormatErr(service.myErr.Msg(classes.MysqlSearchError), "Crons.GetCronByID", err)
 		return response
 	}
@@ -227,7 +227,7 @@ func (service *Service) UpdateCron(params structs.UpdateCronRequest, ctx context
 
 		if err != nil {
 			response.Code = classes.JsonMarshalError
-			response.Message = service.tools.FormatMsg(structs.RequestErrorMsg, "")
+			response.Message = service.tools.FormatMsg(service.myErr.Msg(classes.JsonMarshalError), "")
 			response.Error = service.tools.FormatErr(service.myErr.Msg(classes.JsonMarshalError), "Args.Marshal", err)
 			return response
 		}
@@ -249,7 +249,7 @@ func (service *Service) UpdateCron(params structs.UpdateCronRequest, ctx context
 
 		if err != nil {
 			response.Code = classes.JsonMarshalError
-			response.Message = service.tools.FormatMsg(structs.RequestErrorMsg, "")
+			response.Message = service.tools.FormatMsg(service.myErr.Msg(classes.JsonMarshalError), "")
 			response.Error = service.tools.FormatErr(service.myErr.Msg(classes.JsonMarshalError), "Headers.Marshal", err)
 			return response
 		}
@@ -298,7 +298,7 @@ func (service *Service) UpdateCron(params structs.UpdateCronRequest, ctx context
 
 	if err != nil {
 		response.Code = classes.MysqlInsertError
-		response.Message = service.tools.FormatMsg(structs.RequestErrorMsg, "")
+		response.Message = service.tools.FormatMsg(service.myErr.Msg(classes.MysqlInsertError), "")
 		response.Error = service.tools.FormatErr(service.myErr.Msg(classes.MysqlInsertError), "Crons.UpdateCron", err)
 		return response
 	}
@@ -321,7 +321,7 @@ func (service *Service) DeleteCron(params structs.DeleteCronRequest, ctx context
 
 	if err != nil {
 		response.Code = classes.MysqlDeleteError
-		response.Message = service.tools.FormatMsg(structs.RequestErrorMsg, "")
+		response.Message = service.tools.FormatMsg(service.myErr.Msg(classes.MysqlDeleteError), "")
 		response.Error = service.tools.FormatErr(service.myErr.Msg(classes.MysqlDeleteError), "Crons.DeleteCronByID", err)
 		return response
 	}

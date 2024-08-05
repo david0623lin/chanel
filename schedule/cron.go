@@ -4,6 +4,7 @@ import (
 	"chanel/classes"
 	"chanel/lib"
 	"chanel/structs"
+	"fmt"
 	"net/http"
 	"time"
 )
@@ -24,8 +25,8 @@ func (schedule *Schedule) doCron(cron *Job) {
 	defer func() {
 		if err := recover(); err != nil {
 			traceLog.SetRequestTime(schedule.tools.GetDownRunTime(t))
-			traceLog.SetCode(structs.SystemErrorCode)
-			traceLog.PrintError(structs.SystemErrorMsg, schedule.tools.FormatErr(structs.SystemErrorMsg, "doCron.Panic", lib.PanicParser(err)))
+			traceLog.SetCode(classes.SystemError)
+			traceLog.PrintError(fmt.Sprintf("%s, doCron.Panic", schedule.myErr.Msg(classes.SystemError)), lib.PanicParser(err))
 			return
 		}
 	}()
