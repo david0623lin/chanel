@@ -59,6 +59,7 @@ func (service *Service) GetTasks(params structs.GetTasksRequest, ctx context.Con
 		}
 
 		result = append(result, structs.GetTasksResponse{
+			ID:         task.ID,
 			Protocol:   task.Protocol,
 			Domain:     task.Domain,
 			Path:       task.Path,

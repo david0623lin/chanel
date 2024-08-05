@@ -63,6 +63,7 @@ type GetTasksRequest struct {
 }
 
 type GetTasksResponse struct {
+	ID         int32
 	Protocol   string
 	Domain     string
 	Path       string
@@ -122,17 +123,69 @@ type DeleteTaskRequest struct {
 type DeleteTaskResponse struct {
 }
 
+type GetCronsRequest struct {
+	Path   string
+	Method string
+	Status int32
+}
+
+type GetCronsResponse struct {
+	ID         int32
+	Protocol   string
+	Domain     string
+	Path       string
+	Port       string
+	Method     string
+	Args       map[string]interface{}
+	Headers    map[string]string
+	Execute    string
+	Status     int32
+	Remark     string
+	CreateTime int64
+	UpdateTime int64
+}
+
 type CreateCronRequest struct {
 	Protocol string
 	Domain   string
 	Path     string
 	Port     string
 	Method   string
-	Args     string
-	Headers  string
+	Args     map[string]interface{}
+	Headers  map[string]string
 	Execute  string
 	Remark   string
 }
 
 type CreateCronResponse struct {
+}
+
+type UpdateCronRequest struct {
+	CronID   int32
+	Protocol string
+	Domain   string
+	Path     string
+	Port     string
+	Method   string
+	Args     map[string]interface{}
+	Headers  map[string]string
+	Execute  string
+	Remark   string
+}
+
+type UpdateCronResponse struct {
+	Detail []UpdateCronDetail
+}
+
+type UpdateCronDetail struct {
+	Field  string
+	Before interface{}
+	After  interface{}
+}
+
+type DeleteCronRequest struct {
+	CronID int32
+}
+
+type DeleteCronResponse struct {
 }

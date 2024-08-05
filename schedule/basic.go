@@ -113,7 +113,7 @@ func (schedule *Schedule) LoadJobs() {
 	}
 
 	// 取得啟用中的排程
-	cronLists, err := schedule.mysql.ChanelDB.Repository.Crons.GetCrons()
+	cronLists, err := schedule.mysql.ChanelDB.Repository.Crons.GetEnableCrons()
 
 	if err != nil {
 		panic(fmt.Sprintf("Schedule LoadJobs 取得啟用中的排程錯誤, ERR: %s", err.Error()))
@@ -143,7 +143,10 @@ func (schedule *Schedule) LoadJobs() {
 
 func (schedule *Schedule) StartJobs() {
 	// 排程紀錄下一個執行時間用
-	cronNext := make(map[int32]time.Time)
+	var (
+		next     cronNextInfo
+		cronNext = make(map[int32]cronNextInfo)
+	)
 
 	for {
 		select {
@@ -158,18 +161,28 @@ func (schedule *Schedule) StartJobs() {
 			case Cron:
 				// 解析 排程字串 (新增時已經檢查過就不再檢查 err)
 				cronExpr, _ := cronexpr.Parse(Job.ExecuteCron)
+				next = cronNextInfo{}
 
 				if _, exists := cronNext[Job.ID]; !exists {
 					// 寫入 下一次排程時間
-					cronNext[Job.ID] = cronExpr.Next(schedule.tools.Now())
+					next.t = cronExpr.Next(schedule.tools.Now())
+					next.s = Job.ExecuteCron
+					cronNext[Job.ID] = next
+				} else {
+					// 如果排程執行時間有修改, 刪除已排定的下次執行時間, 並重新寫入最新的執行時間
+					if Job.ExecuteCron != cronNext[Job.ID].s {
+						delete(cronNext, Job.ID)
+
+						// 寫入 下一次排程時間
+						next.t = cronExpr.Next(schedule.tools.Now())
+						next.s = Job.ExecuteCron
+						cronNext[Job.ID] = next
+					}
 				}
 
-				if schedule.tools.NowUnix() == cronNext[Job.ID].Unix() {
+				if schedule.tools.NowUnix() == cronNext[Job.ID].t.Unix() {
 					go schedule.doCron(Job)
-
-					// 更新 下一次排程時間
-					cronExpr, _ = cronexpr.Parse(Job.ExecuteCron)
-					cronNext[Job.ID] = cronExpr.Next(schedule.tools.Now())
+					delete(cronNext, Job.ID)
 				}
 				// 一定要把 Cron 寫回去 Job, 非常重要 !!
 				JobChan <- Job

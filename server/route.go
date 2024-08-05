@@ -56,7 +56,10 @@ func (srv *Server) Start() {
 
 		// 排程
 		cronGroup := chanelGroup.Group("cron")
+		cronGroup.GET("/list", srv.controller.GetCrons)
 		cronGroup.POST("/create", srv.controller.CreateCron)
+		cronGroup.PUT("/update", srv.controller.UpdateCron)
+		cronGroup.DELETE("/remove", srv.controller.DeleteCron)
 	}
 	// 啟動服務
 	if err := router.Run(fmt.Sprintf(":%s", srv.config.ServerPort)); err != nil {

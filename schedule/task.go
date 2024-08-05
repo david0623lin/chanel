@@ -13,8 +13,9 @@ func (schedule *Schedule) doTask(task *Job) {
 	traceLog.SetTopic("schedule")
 	traceLog.SetMethod("doTask")
 	traceLog.SetArgs(task)
-	traceID, err := schedule.tools.NewTraceID()
+
 	t := time.Now()
+	traceID, err := schedule.tools.NewTraceID()
 
 	if err != nil {
 		traceLog.SetRequestTime(schedule.tools.GetDownRunTime(t))
@@ -23,8 +24,11 @@ func (schedule *Schedule) doTask(task *Job) {
 		return
 	}
 	traceLog.SetTraceID(traceID)
+
 	// 寫入 traceID 到 header
-	task.Headers[structs.TraceID] = traceID
+	if task.Headers == nil {
+		task.Headers = make(map[string]string)
+	}
 
 	// 建立 curl 物件
 	curl := classes.CurlInit(schedule.tools)

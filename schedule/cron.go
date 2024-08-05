@@ -2,10 +2,16 @@ package schedule
 
 import (
 	"chanel/classes"
+	"chanel/lib"
 	"chanel/structs"
 	"net/http"
 	"time"
 )
+
+type cronNextInfo struct {
+	t time.Time
+	s string
+}
 
 func (schedule *Schedule) doCron(cron *Job) {
 	// 初始化 Trace log
@@ -13,8 +19,17 @@ func (schedule *Schedule) doCron(cron *Job) {
 	traceLog.SetTopic("schedule")
 	traceLog.SetMethod("doCron")
 	traceLog.SetArgs(cron)
-	traceID, err := schedule.tools.NewTraceID()
 	t := time.Now()
+
+	defer func() {
+		if err := recover(); err != nil {
+			traceLog.SetRequestTime(schedule.tools.GetDownRunTime(t))
+			traceLog.SetCode(structs.SystemErrorCode)
+			traceLog.PrintError(structs.SystemErrorMsg, schedule.tools.FormatErr(structs.SystemErrorMsg, "doCron.Panic", lib.PanicParser(err)))
+			return
+		}
+	}()
+	traceID, err := schedule.tools.NewTraceID()
 
 	if err != nil {
 		traceLog.SetRequestTime(schedule.tools.GetDownRunTime(t))
@@ -23,7 +38,11 @@ func (schedule *Schedule) doCron(cron *Job) {
 		return
 	}
 	traceLog.SetTraceID(traceID)
+
 	// 寫入 traceID 到 header
+	if cron.Headers == nil {
+		cron.Headers = make(map[string]string)
+	}
 	cron.Headers[structs.TraceID] = traceID
 
 	// 建立 curl 物件
