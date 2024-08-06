@@ -73,6 +73,15 @@ func main() {
 	go schedules.LoadJobs()
 	go schedules.StartJobs()
 
+	// 初始化 Websocket
+	websocket := classes.WebsocketInit(config, ctx, redis)
+	websocket.SetTools(tools)
+	websocket.SetError(myErr)
+
+	go websocket.Start()
+	go websocket.Messages()
+	go websocket.Heart()
+
 	// 優雅退出
 	signals := make(chan os.Signal, 1)
 	signal.Notify(signals, os.Interrupt, syscall.SIGTERM)

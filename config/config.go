@@ -11,6 +11,7 @@ type Config struct {
 	ServerName string
 	ServerPort string
 	PwdSalt    string
+	WsMd5Salt  string
 
 	MysqlWriteHost     string
 	MysqlWritePort     string
@@ -40,6 +41,7 @@ func NewConfig() *Config {
 		ServerName: os.Getenv("SERVER_NAME"),
 		ServerPort: os.Getenv("SERVER_PORT"),
 		PwdSalt:    os.Getenv("PWD_SALT"),
+		WsMd5Salt:  os.Getenv("WS_MD5_SALT"),
 
 		MysqlWriteHost:     os.Getenv("MYSQL_WRITE_HOST"),
 		MysqlWritePort:     os.Getenv("MYSQL_WRITE_PORT"),

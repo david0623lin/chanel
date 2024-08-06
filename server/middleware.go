@@ -121,7 +121,10 @@ func (srv *Server) Session(c *gin.Context) {
 	}()
 
 	// 不需 Sid 白名單（自行依照需求增加）
-	white := []string{}
+	white := []string{
+		"/chanel/admin/login",
+		"/chanel/admin/register", // 後續要拿掉
+	}
 
 	if !srv.tools.InStrArray(c.Request.URL.Path, white) && c.Request.Header.Get(structs.SessionID) == "" {
 		c.Set("Response", structs.Response{

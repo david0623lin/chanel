@@ -103,6 +103,7 @@ func (m *Mysql) write(conn conn) (*gorm.DB, error) {
 			&structs.ChanelModelTaskRecords{},
 			&structs.ChanelModelCrons{},
 			&structs.ChanelModelCronRecords{},
+			&structs.ChanelModelAdmins{},
 		); err != nil {
 			return db, err
 		}

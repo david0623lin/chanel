@@ -69,3 +69,18 @@ type ChanelModelCronRecords struct {
 func (ChanelModelCronRecords) TableName() string {
 	return "cron_records"
 }
+
+type ChanelModelAdmins struct {
+	ID         int32  `gorm:"primaryKey; autoIncrement;" json:"id"`
+	Uuid       string `gorm:"unique; type:varchar(50); default:''; not null; comment:'使用者ID'" json:"uuid"`
+	Account    string `gorm:"unique; type:varchar(20); default:''; not null; comment:'帳號'" json:"account"`
+	Password   string `gorm:"type:varchar(50); default:''; not null; comment:'密碼'" json:"password"`
+	Status     int32  `gorm:"index; type:int(10); default:0; not null; comment:'狀態 1:啟用,2:停用'" json:"status"`
+	Remark     string `gorm:"type:varchar(255); default:''; not null; comment:'備註'" json:"remark"`
+	CreateTime int64  `gorm:"type:int(10); default:0; not null; comment:'建立時間'" json:"create_time"`
+	UpdateTime int64  `gorm:"type:int(10); default:0; not null; comment:'更新時間'" json:"update_time"`
+}
+
+func (ChanelModelAdmins) TableName() string {
+	return "admins"
+}

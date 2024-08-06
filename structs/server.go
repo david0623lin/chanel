@@ -32,6 +32,11 @@ type Headers struct {
 type Session struct {
 }
 
+type Websockets struct {
+	Sid  string
+	Uuid string
+}
+
 type contextKey string
 
 const HeadersKey = contextKey("Headers")
@@ -180,4 +185,24 @@ type DeleteCronRequest struct {
 }
 
 type DeleteCronResponse struct {
+}
+
+type AdminLoginRequest struct {
+	Account  string
+	Password string
+}
+
+type AdminLoginResponse struct {
+	Account string
+	Sid     string // session id
+	Wid     string // websocket conn key
+}
+
+type AdminRegisterRequest struct {
+	Account  string
+	Password string
+	Status   int32
+}
+
+type AdminRegisterResponse struct {
 }

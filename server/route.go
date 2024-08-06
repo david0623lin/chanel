@@ -60,6 +60,11 @@ func (srv *Server) Start() {
 		cronGroup.POST("/create", srv.controller.CreateCron)
 		cronGroup.PUT("/update", srv.controller.UpdateCron)
 		cronGroup.DELETE("/remove", srv.controller.DeleteCron)
+
+		// 管理後台
+		AdminGroup := chanelGroup.Group("admin")
+		AdminGroup.POST("/login", srv.controller.Login)
+		AdminGroup.POST("/register", srv.controller.Register)
 	}
 	// 啟動服務
 	if err := router.Run(fmt.Sprintf(":%s", srv.config.ServerPort)); err != nil {

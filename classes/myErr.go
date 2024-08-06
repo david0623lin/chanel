@@ -40,6 +40,15 @@ const (
 	CreateTraceIdError     = 18
 	ParseUrlParamsError    = 19
 	IoReadBodyError        = 20
+
+	// API
+	AccountNotFound        = 1001
+	PasswordError          = 1002
+	AccountDisable         = 1003
+	MakeSessionError       = 1004
+	WebsocketUpgradeError  = 1005
+	WebsocketParseKeyError = 1006
+	WebsocketKeyExpired    = 1007
 )
 
 func (e *MyErr) Msg(code int32) string {
@@ -79,8 +88,17 @@ func (e *MyErr) result(code int32) string {
 		RouteError:             "路由錯誤",
 		OperatingTooFrequently: "操作太頻繁",
 		CreateTraceIdError:     "建立TraceID錯誤",
-		ParseUrlParamsError:    "解析路由參數錯誤",
+		ParseUrlParamsError:    "解析網址參數錯誤",
 		IoReadBodyError:        "取得請求Body資料錯誤",
+
+		// API
+		AccountNotFound:        "查無此帳號",
+		PasswordError:          "密碼錯誤",
+		AccountDisable:         "帳號停用",
+		MakeSessionError:       "產生Session憑證錯誤",
+		WebsocketUpgradeError:  "建立Websocket連線錯誤",
+		WebsocketParseKeyError: "解析Websocket Key錯誤",
+		WebsocketKeyExpired:    "Websocket Key已過期",
 	}
 	return errCode[code]
 }
