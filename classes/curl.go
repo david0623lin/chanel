@@ -176,15 +176,21 @@ func (r *Curl) send() (string, error) {
 				for k, v := range r.body {
 					if file, ok := v.(*os.File); ok {
 						part, err := w.CreateFormFile(k, file.Name())
+
 						if err != nil {
 							return "", err
 						}
 						_, err = io.Copy(part, file)
+
 						if err != nil {
 							return "", err
 						}
 					} else {
-						w.WriteField(k, fmt.Sprintf("%v", v))
+						err := w.WriteField(k, fmt.Sprintf("%v", v))
+
+						if err != nil {
+							return "", err
+						}
 					}
 				}
 				w.Close()
