@@ -32,47 +32,94 @@ func (service *Service) GetTasks(params structs.GetTasksRequest, ctx context.Con
 	}
 
 	for _, task := range tasks {
-		var args map[string]interface{}
-
-		if task.Args != "" {
-			err := json.Unmarshal([]byte(task.Args), &args)
-
-			if err != nil {
-				response.Code = classes.JsonUnmarshalError
-				response.Message = service.tools.FormatMsg(service.myErr.Msg(classes.JsonUnmarshalError), "")
-				response.Error = service.tools.FormatErr(service.myErr.Msg(classes.JsonUnmarshalError), "Args.Unmarshal", err)
-				return response
-			}
-		}
-
-		var headers map[string]string
-
-		if task.Headers != "" {
-			err := json.Unmarshal([]byte(task.Headers), &headers)
-
-			if err != nil {
-				response.Code = classes.JsonUnmarshalError
-				response.Message = service.tools.FormatMsg(service.myErr.Msg(classes.JsonUnmarshalError), "")
-				response.Error = service.tools.FormatErr(service.myErr.Msg(classes.JsonUnmarshalError), "Headers.Unmarshal", err)
-				return response
-			}
-		}
-
 		result = append(result, structs.GetTasksResponse{
-			ID:         task.ID,
-			Protocol:   task.Protocol,
-			Domain:     task.Domain,
-			Path:       task.Path,
-			Port:       task.Port,
-			Method:     task.Method,
-			Args:       args,
-			Headers:    headers,
-			Execute:    task.Execute,
-			Status:     task.Status,
-			Remark:     task.Remark,
-			CreateTime: task.CreateTime,
-			UpdateTime: task.UpdateTime,
+			ID:       task.ID,
+			Topic:    task.Topic,
+			Protocol: task.Protocol,
+			Domain:   task.Domain,
+			Path:     task.Path,
+			Port:     task.Port,
+			Method:   task.Method,
+			Execute:  task.Execute,
+			Status:   task.Status,
 		})
+	}
+
+	response.Result = result
+	return response
+}
+
+func (service *Service) GetTaskDetail(params structs.GetTaskDetailRequest, ctx context.Context) structs.Response {
+	var (
+		response = structs.Response{}
+	)
+
+	// 查詢
+	task, err := service.mysql.ChanelDB.Repository.Tasks.GetTaskByID(params.ID)
+
+	if err != nil {
+		response.Code = classes.MysqlSearchError
+		response.Message = service.tools.FormatMsg(service.myErr.Msg(classes.MysqlSearchError), "")
+		response.Error = service.tools.FormatErr(service.myErr.Msg(classes.MysqlSearchError), "Tasks.GetTaskByID", err)
+		return response
+	}
+
+	var args map[string]interface{}
+
+	if task.Args != "" {
+		err := json.Unmarshal([]byte(task.Args), &args)
+
+		if err != nil {
+			response.Code = classes.JsonUnmarshalError
+			response.Message = service.tools.FormatMsg(service.myErr.Msg(classes.JsonUnmarshalError), "")
+			response.Error = service.tools.FormatErr(service.myErr.Msg(classes.JsonUnmarshalError), "Args.Unmarshal", err)
+			return response
+		}
+	}
+
+	var headers map[string]string
+
+	if task.Headers != "" {
+		err := json.Unmarshal([]byte(task.Headers), &headers)
+
+		if err != nil {
+			response.Code = classes.JsonUnmarshalError
+			response.Message = service.tools.FormatMsg(service.myErr.Msg(classes.JsonUnmarshalError), "")
+			response.Error = service.tools.FormatErr(service.myErr.Msg(classes.JsonUnmarshalError), "Headers.Unmarshal", err)
+			return response
+		}
+	}
+
+	result := structs.GetTaskDetailResponse{
+		Topic:      task.Topic,
+		Protocol:   task.Protocol,
+		Domain:     task.Domain,
+		Path:       task.Path,
+		Port:       task.Port,
+		Method:     task.Method,
+		Args:       args,
+		Headers:    headers,
+		Execute:    task.Execute,
+		Status:     task.Status,
+		Remark:     task.Remark,
+		CreateTime: task.CreateTime,
+		UpdateTime: task.UpdateTime,
+	}
+
+	// 已執行多取得執行結果
+	if task.Status == 2 {
+		var taskRecord structs.ChanelModelTaskRecords
+		taskRecord, err = service.mysql.ChanelDB.Repository.TaskRecords.GetTaskByTaskID(params.ID)
+
+		if err != nil {
+			response.Code = classes.MysqlSearchError
+			response.Message = service.tools.FormatMsg(service.myErr.Msg(classes.MysqlSearchError), "")
+			response.Error = service.tools.FormatErr(service.myErr.Msg(classes.MysqlSearchError), "TaskRecords.GetTaskByTaskID", err)
+			return response
+		}
+		result.Result = taskRecord.Status
+		result.Response = taskRecord.Result
+		result.Error = taskRecord.Error
 	}
 
 	response.Result = result
@@ -113,6 +160,7 @@ func (service *Service) CreateTask(params structs.CreateTaskRequest, ctx context
 	}
 
 	datas := structs.ChanelModelTasks{
+		Topic:      params.Topic,
 		Protocol:   params.Protocol,
 		Domain:     params.Domain,
 		Path:       params.Path,
@@ -140,6 +188,7 @@ func (service *Service) CreateTask(params structs.CreateTaskRequest, ctx context
 	// 寫入頻道
 	schedule.JobChan <- &schedule.Job{
 		ID:          taskID,
+		Topic:       datas.Topic,
 		Protocol:    datas.Protocol,
 		Domain:      datas.Domain,
 		Path:        datas.Path,
@@ -180,6 +229,15 @@ func (service *Service) UpdateTask(params structs.UpdateTaskRequest, ctx context
 			break
 		}
 		schedule.JobChan <- job
+	}
+
+	if params.Topic != "" && params.Topic != beforeTask.Topic {
+		newJob.Topic = params.Topic
+		result.Detail = append(result.Detail, structs.UpdateTaskDetail{
+			Field:  "Topic",
+			Before: beforeTask.Topic,
+			After:  params.Topic,
+		})
 	}
 
 	if params.Protocol != "" && params.Protocol != beforeTask.Protocol {
@@ -290,6 +348,7 @@ func (service *Service) UpdateTask(params structs.UpdateTaskRequest, ctx context
 
 	// 資料更新
 	err = service.mysql.ChanelDB.Repository.Tasks.UpdateTask(structs.ChanelModelTasks{
+		Topic:      params.Topic,
 		Protocol:   params.Protocol,
 		Domain:     params.Domain,
 		Path:       params.Path,

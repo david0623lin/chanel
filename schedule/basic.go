@@ -31,6 +31,7 @@ var JobChan chan *Job
 
 type Job struct {
 	ID          int32
+	Topic       string
 	Protocol    string
 	Domain      string
 	Path        string
@@ -99,6 +100,7 @@ func (schedule *Schedule) LoadJobs() {
 		// 把取得的任務都解析後寫入任務列表, 後續一次新增, 避免新增後執行到一半遇到解析異常 Panic 中斷情況
 		jobs = append(jobs, &Job{
 			ID:          taskItem.ID,
+			Topic:       taskItem.Topic,
 			Protocol:    taskItem.Protocol,
 			Domain:      taskItem.Domain,
 			Path:        taskItem.Path,

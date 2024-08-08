@@ -42,8 +42,8 @@ func (m *Tasks) GetTasks(datas structs.GetTasksRequest) ([]structs.ChanelModelTa
 		query.Where("create_time >= ? AND create_time <= ?", datas.StartTime, datas.EndTime)
 	}
 
-	if datas.Path != "" {
-		query.Where("path LIKE ?", "%"+datas.Path+"%")
+	if datas.Topic != "" {
+		query.Where("topic LIKE ?", "%"+datas.Topic+"%")
 	}
 
 	if datas.Method != "" {

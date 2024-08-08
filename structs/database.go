@@ -6,6 +6,7 @@ package structs
 
 type ChanelModelTasks struct {
 	ID         int32  `gorm:"primaryKey; autoIncrement;" json:"id"`
+	Topic      string `gorm:"index; type:varchar(50); default:''; not null; comment:'主題'" json:"topic"`
 	Protocol   string `gorm:"type:varchar(10); default:''; not null; comment:'協議'" json:"protocol"`
 	Domain     string `gorm:"index; type:varchar(50); default:''; not null; comment:'網域'" json:"domain"`
 	Path       string `gorm:"index; type:varchar(50); default:''; not null; comment:'路徑'" json:"path"`

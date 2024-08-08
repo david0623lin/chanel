@@ -50,6 +50,7 @@ func (srv *Server) Start() {
 		// 任務
 		taskGroup := chanelGroup.Group("task")
 		taskGroup.GET("/list", srv.controller.GetTasks)
+		taskGroup.GET("/detail", srv.controller.GetTaskDetail)
 		taskGroup.POST("/create", srv.controller.CreateTask)
 		taskGroup.PUT("/update", srv.controller.UpdateTask)
 		taskGroup.DELETE("/remove", srv.controller.DeleteTask)

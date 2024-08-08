@@ -57,10 +57,27 @@ type GetTasksRequest struct {
 	Path      string
 	Method    string
 	Status    int32
+	Topic     string
 }
 
 type GetTasksResponse struct {
-	ID         int32
+	ID       int32
+	Topic    string
+	Protocol string
+	Domain   string
+	Path     string
+	Port     string
+	Method   string
+	Execute  int64
+	Status   int32
+}
+
+type GetTaskDetailRequest struct {
+	ID int32
+}
+
+type GetTaskDetailResponse struct {
+	Topic      string
 	Protocol   string
 	Domain     string
 	Path       string
@@ -73,9 +90,13 @@ type GetTasksResponse struct {
 	Remark     string
 	CreateTime int64
 	UpdateTime int64
+	Result     int32
+	Response   string
+	Error      string
 }
 
 type CreateTaskRequest struct {
+	Topic    string
 	Protocol string
 	Domain   string
 	Path     string
@@ -92,6 +113,7 @@ type CreateTaskResponse struct {
 
 type UpdateTaskRequest struct {
 	TaskID   int32
+	Topic    string
 	Protocol string
 	Domain   string
 	Path     string

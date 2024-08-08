@@ -33,7 +33,22 @@ func (request *Request) GetTasks(params structs.GetTasksRequest, response struct
 	return response
 }
 
+func (request *Request) GetTaskDetail(params structs.GetTaskDetailRequest, response structs.Response) structs.Response {
+	if !request.tools.Request(params.ID) {
+		response.Code = classes.MissingRequireParams
+		response.Message = request.tools.FormatMsg(request.myErr.Msg(classes.MissingRequireParams), "ID")
+		return response
+	}
+	return response
+}
+
 func (request *Request) CreateTask(params structs.CreateTaskRequest, response structs.Response) structs.Response {
+	if !request.tools.Request(params.Topic) {
+		response.Code = classes.MissingRequireParams
+		response.Message = request.tools.FormatMsg(request.myErr.Msg(classes.MissingRequireParams), "Topic")
+		return response
+	}
+
 	if !request.tools.Request(params.Protocol) {
 		response.Code = classes.MissingRequireParams
 		response.Message = request.tools.FormatMsg(request.myErr.Msg(classes.MissingRequireParams), "Protocol")

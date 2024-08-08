@@ -14,7 +14,7 @@ import (
 // @Param Sid header string true "SessionID"
 // @Param StartTime query int false "開始時間"
 // @Param EndTime query int false "結束時間"
-// @Param Path query string false "路徑"
+// @Param Topic query string false "主題"
 // @Param Method query string false "方法"
 // @Param Status query int false "狀態 1:未執行, 2已執行"
 // @Success 200 {object} structs.Response "回傳"
@@ -34,8 +34,8 @@ func (ctl *Controoller) GetTasks(c *gin.Context) {
 	params := structs.GetTasksRequest{
 		StartTime: ctl.tools.StrToInt64(c.Query("StartTime")),
 		EndTime:   ctl.tools.StrToInt64(c.Query("EndTime")),
-		Path:      c.Query("Path"),
 		Method:    c.Query("Method"),
+		Topic:     c.Query("Topic"),
 		Status:    ctl.tools.StrToInt32(c.Query("Status")),
 	}
 	// 參數檢查
@@ -44,6 +44,37 @@ func (ctl *Controoller) GetTasks(c *gin.Context) {
 	}
 	// 執行
 	response = ctl.service.GetTasks(params, ctx)
+}
+
+// @Summary 取得任務詳細內容
+// @description 一些說明
+// @Tags Task
+// @produce application/json
+// @Param Sid header string true "SessionID"
+// @Param ID query int true "任務ID"
+// @Success 200 {object} structs.Response "回傳"
+// @Router /chanel/task/detail [get]
+func (ctl *Controoller) GetTaskDetail(c *gin.Context) {
+	var (
+		response = structs.Response{}
+	)
+
+	defer func() {
+		c.Set("Response", response)
+	}()
+	// 取得請求上下文
+	ctx := c.Request.Context()
+
+	// 參數處理
+	params := structs.GetTaskDetailRequest{
+		ID: ctl.tools.StrToInt32(c.Query("ID")),
+	}
+	// 參數檢查
+	if response = ctl.request.GetTaskDetail(params, response); response.Code != 0 {
+		return
+	}
+	// 執行
+	response = ctl.service.GetTaskDetail(params, ctx)
 }
 
 // @Summary 新增任務

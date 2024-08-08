@@ -18,14 +18,13 @@ func TaskRecordsInit(w, r *gorm.DB) *TaskRecords {
 	}
 }
 
-func (m *TaskRecords) GetTasks() ([]structs.ChanelModelTaskRecords, error) {
-	var res []structs.ChanelModelTaskRecords
+func (m *TaskRecords) GetTaskByTaskID(taskID int32) (structs.ChanelModelTaskRecords, error) {
+	var res structs.ChanelModelTaskRecords
 
 	query := m.rDB.Raw(
 		`
-			SELECT * FROM tasks
-			ORDER BY id ASC
-		`,
+			SELECT * FROM task_records WHERE task_id = ?
+		`, taskID,
 	)
 
 	if err := query.Find(&res).Error; err != nil {
