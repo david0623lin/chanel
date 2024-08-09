@@ -152,7 +152,7 @@ func (ctl *Controoller) UpdateTask(c *gin.Context) {
 // @Tags Task
 // @produce application/json
 // @Param Sid header string true "SessionID"
-// @Param TaskID query int true "任務ID"
+// @Param ID query int true "任務ID"
 // @Success 200 {object} structs.Response "回傳"
 // @Router /chanel/task/remove [delete]
 func (ctl *Controoller) DeleteTask(c *gin.Context) {
@@ -168,7 +168,7 @@ func (ctl *Controoller) DeleteTask(c *gin.Context) {
 
 	// 參數處理
 	params := structs.DeleteTaskRequest{
-		TaskID: ctl.tools.StrToInt32(c.DefaultQuery("TaskID", "")),
+		ID: ctl.tools.StrToInt32(c.DefaultQuery("ID", "")),
 	}
 	// 參數檢查
 	if response = ctl.request.DeleteTask(params, response); response.Code != 0 {

@@ -121,9 +121,9 @@ func (request *Request) UpdateTask(params structs.UpdateTaskRequest, response st
 }
 
 func (request *Request) DeleteTask(params structs.DeleteTaskRequest, response structs.Response) structs.Response {
-	if !request.tools.Request(params.TaskID) {
+	if !request.tools.Request(params.ID) {
 		response.Code = classes.MissingRequireParams
-		response.Message = request.tools.FormatMsg(request.myErr.Msg(classes.MissingRequireParams), "TaskID")
+		response.Message = request.tools.FormatMsg(request.myErr.Msg(classes.MissingRequireParams), "ID")
 		return response
 	}
 

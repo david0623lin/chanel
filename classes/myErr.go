@@ -49,6 +49,7 @@ const (
 	WebsocketUpgradeError  = 1005
 	WebsocketParseKeyError = 1006
 	WebsocketKeyExpired    = 1007
+	TaskAlreadyFinish      = 1008
 )
 
 func (e *MyErr) Msg(code int32) string {
@@ -99,6 +100,7 @@ func (e *MyErr) result(code int32) string {
 		WebsocketUpgradeError:  "建立Websocket連線錯誤",
 		WebsocketParseKeyError: "解析Websocket Key錯誤",
 		WebsocketKeyExpired:    "Websocket Key已過期",
+		TaskAlreadyFinish:      "任務已經執行完成",
 	}
 	return errCode[code]
 }

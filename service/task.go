@@ -33,7 +33,7 @@ func (service *Service) GetTasks(params structs.GetTasksRequest, ctx context.Con
 
 	for _, task := range tasks {
 		result = append(result, structs.GetTasksResponse{
-			ID:       task.ID,
+			TaskID:   task.ID,
 			Topic:    task.Topic,
 			Protocol: task.Protocol,
 			Domain:   task.Domain,
@@ -91,6 +91,7 @@ func (service *Service) GetTaskDetail(params structs.GetTaskDetailRequest, ctx c
 	}
 
 	result := structs.GetTaskDetailResponse{
+		TaskID:     task.ID,
 		Topic:      task.Topic,
 		Protocol:   task.Protocol,
 		Domain:     task.Domain,
@@ -220,6 +221,13 @@ func (service *Service) UpdateTask(params structs.UpdateTaskRequest, ctx context
 		return response
 	}
 
+	// 只能修改未執行的狀態任務
+	if beforeTask.Status != 1 {
+		response.Code = classes.TaskAlreadyFinish
+		response.Message = service.tools.FormatMsg(service.myErr.Msg(classes.TaskAlreadyFinish), "")
+		return response
+	}
+
 	// 取出要修改的 Job
 	newJob := &schedule.Job{}
 
@@ -233,56 +241,26 @@ func (service *Service) UpdateTask(params structs.UpdateTaskRequest, ctx context
 
 	if params.Topic != "" && params.Topic != beforeTask.Topic {
 		newJob.Topic = params.Topic
-		result.Detail = append(result.Detail, structs.UpdateTaskDetail{
-			Field:  "Topic",
-			Before: beforeTask.Topic,
-			After:  params.Topic,
-		})
 	}
 
 	if params.Protocol != "" && params.Protocol != beforeTask.Protocol {
 		newJob.Protocol = params.Protocol
-		result.Detail = append(result.Detail, structs.UpdateTaskDetail{
-			Field:  "Protocol",
-			Before: beforeTask.Protocol,
-			After:  params.Protocol,
-		})
 	}
 
 	if params.Domain != "" && params.Domain != beforeTask.Domain {
 		newJob.Domain = params.Domain
-		result.Detail = append(result.Detail, structs.UpdateTaskDetail{
-			Field:  "Domain",
-			Before: beforeTask.Domain,
-			After:  params.Domain,
-		})
 	}
 
 	if params.Path != "" && params.Path != beforeTask.Path {
 		newJob.Path = params.Path
-		result.Detail = append(result.Detail, structs.UpdateTaskDetail{
-			Field:  "Path",
-			Before: beforeTask.Path,
-			After:  params.Path,
-		})
 	}
 
 	if params.Port != "" && params.Port != beforeTask.Port {
 		newJob.Port = params.Port
-		result.Detail = append(result.Detail, structs.UpdateTaskDetail{
-			Field:  "Port",
-			Before: beforeTask.Port,
-			After:  params.Port,
-		})
 	}
 
 	if params.Method != "" && params.Method != beforeTask.Method {
 		newJob.Method = params.Method
-		result.Detail = append(result.Detail, structs.UpdateTaskDetail{
-			Field:  "Method",
-			Before: beforeTask.Method,
-			After:  params.Method,
-		})
 	}
 
 	var args []byte
@@ -299,11 +277,6 @@ func (service *Service) UpdateTask(params structs.UpdateTaskRequest, ctx context
 
 		if string(args) != beforeTask.Args {
 			newJob.Args = params.Args
-			result.Detail = append(result.Detail, structs.UpdateTaskDetail{
-				Field:  "Args",
-				Before: beforeTask.Args,
-				After:  params.Args,
-			})
 		}
 	}
 
@@ -321,29 +294,11 @@ func (service *Service) UpdateTask(params structs.UpdateTaskRequest, ctx context
 
 		if string(headers) != beforeTask.Headers {
 			newJob.Headers = params.Headers
-			result.Detail = append(result.Detail, structs.UpdateTaskDetail{
-				Field:  "Headers",
-				Before: beforeTask.Headers,
-				After:  params.Headers,
-			})
 		}
 	}
 
 	if params.Execute != 0 && params.Execute != beforeTask.Execute {
 		newJob.ExecuteTask = params.Execute
-		result.Detail = append(result.Detail, structs.UpdateTaskDetail{
-			Field:  "Execute",
-			Before: beforeTask.Execute,
-			After:  params.Execute,
-		})
-	}
-
-	if params.Remark != "" && params.Remark != beforeTask.Remark {
-		result.Detail = append(result.Detail, structs.UpdateTaskDetail{
-			Field:  "Remark",
-			Before: beforeTask.Remark,
-			After:  params.Remark,
-		})
 	}
 
 	// 資料更新
@@ -383,7 +338,24 @@ func (service *Service) DeleteTask(params structs.DeleteTaskRequest, ctx context
 	)
 
 	// 查詢
-	err := service.mysql.ChanelDB.Repository.Tasks.DeleteTaskByID(params.TaskID)
+	task, err := service.mysql.ChanelDB.Repository.Tasks.GetTaskByID(params.ID)
+
+	if err != nil {
+		response.Code = classes.MysqlSearchError
+		response.Message = service.tools.FormatMsg(service.myErr.Msg(classes.MysqlSearchError), "")
+		response.Error = service.tools.FormatErr(service.myErr.Msg(classes.MysqlSearchError), "Tasks.GetTaskByID", err)
+		return response
+	}
+
+	// 只能修改未執行的狀態任務
+	if task.Status != 1 {
+		response.Code = classes.TaskAlreadyFinish
+		response.Message = service.tools.FormatMsg(service.myErr.Msg(classes.TaskAlreadyFinish), "")
+		return response
+	}
+
+	// 刪除
+	err = service.mysql.ChanelDB.Repository.Tasks.DeleteTaskByID(params.ID)
 
 	if err != nil {
 		response.Code = classes.MysqlDeleteError

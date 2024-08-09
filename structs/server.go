@@ -61,7 +61,7 @@ type GetTasksRequest struct {
 }
 
 type GetTasksResponse struct {
-	ID       int32
+	TaskID   int32
 	Topic    string
 	Protocol string
 	Domain   string
@@ -77,6 +77,7 @@ type GetTaskDetailRequest struct {
 }
 
 type GetTaskDetailResponse struct {
+	TaskID     int32
 	Topic      string
 	Protocol   string
 	Domain     string
@@ -126,17 +127,10 @@ type UpdateTaskRequest struct {
 }
 
 type UpdateTaskResponse struct {
-	Detail []UpdateTaskDetail
-}
-
-type UpdateTaskDetail struct {
-	Field  string
-	Before interface{}
-	After  interface{}
 }
 
 type DeleteTaskRequest struct {
-	TaskID int32
+	ID int32
 }
 
 type DeleteTaskResponse struct {
